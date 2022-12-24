@@ -1,0 +1,19 @@
+{
+  "name": "proton",
+  "version": "0.0.1",
+  "type": "module",
+  "description": "Proton Designer Rewrite",
+  "main": "main.js",
+  "repository": "https://github.com/ProtonDesigner/rewrite",
+  "author": "TechStudent10",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.4",
+    "concurrently": "^7.6.0",
+    "electron": "^22.0.0"
+  },
+  "dependencies": {
+    "unique-names-generator": "^4.7.1",
+    "uuid": "^9.0.0"
+  }
+}
