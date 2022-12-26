@@ -1,10 +1,10 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
-const autoUpdater = require('electron-updater')
+const { autoUpdater } = require("electron-updater");
 
 app.on("ready", () => {
-    autoUpdater.checkForUpdatesAndNotify()
-})
+	autoUpdater.checkForUpdatesAndNotify();
+});
 
 let win
 
