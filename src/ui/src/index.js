@@ -23,9 +23,9 @@ function App(props) {
     const [state, setState] = useState({})
     const [currentPage, setPage] = useState("home")
 
-    let Screen = pages[currentPage]
+    let Screen = pages[currentPage].component
 
-    return <Screen state={state} setState={setState} setPage={setPage} />
+    return <Screen className="app" state={state} setState={setState} setPage={setPage} />
 }
 
 const appDiv = document.getElementById("app");

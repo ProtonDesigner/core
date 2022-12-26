@@ -1,10 +1,11 @@
 const path = require("path");
 const webpack = require("webpack");
+const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
-module.exports = {
+var config = {
   entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, "./frontend"),
+    path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
   },
   module: {
@@ -47,6 +48,10 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: 'asset/resource',
       }
     ],
   },
@@ -60,5 +65,14 @@ module.exports = {
         NODE_ENV: JSON.stringify("production"),
       },
     }),
-  ],
+    new NodePolyfillPlugin()
+  ]
 };
+
+module.exports = (env, argv) => {
+  if (argv.mode === "development") {
+    config.optimization.minimize = false;
+  }
+
+  return config;
+}
