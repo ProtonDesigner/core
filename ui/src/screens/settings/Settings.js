@@ -1,5 +1,5 @@
 import React from "react"
-import "./settings.scss"
+import "./Settings.scss"
 
 function Settings(props) {
     return <div className={`${props.className} settings`}></div>
