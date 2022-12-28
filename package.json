@@ -2,7 +2,7 @@
   "name": "proton",
   "version": "0.0.2",
   "description": "Proton Designer Rewrite",
-  "main": "main.js",
+  "main": "main.ts",
   "repository": "https://github.com/ProtonDesigner/rewrite",
   "author": "TechStudent10",
   "license": "MIT",
@@ -45,7 +45,7 @@
     "watch:www": "cd ui && webpack --mode development --watch",
     "build:www": "cd ui && webpack --mode production",
     "build:app": "electron-builder",
-    "build": "yarn build:www && yarn build:app",
+    "build": "yarn build:www && tsc && yarn build:app",
     "dev": "concurrently -n electron,watch:www \"yarn:electron*\" \"yarn:watch:www\"",
     "postinstall": "electron-builder install-app-deps"
   },
