@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 var config = {
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
@@ -52,6 +52,11 @@ var config = {
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
+      },
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
       }
     ],
   },
@@ -60,7 +65,10 @@ var config = {
   },
   plugins: [
     new NodePolyfillPlugin()
-  ]
+  ],
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"]
+  }
 };
 
 module.exports = (env, argv) => {
