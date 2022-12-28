@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, FC } from 'react'
 import "./Home.scss"
 
 import Sidebar, { SidebarItem, getAsset } from "./Sidebar"
@@ -6,11 +6,14 @@ import Separator from '../../components/Separator'
 import Dashboard from './dashboard'
 import PocketBase from "pocketbase"
 import Login from './login'
+import BaseComponentProps from '../../BaseComponentProps'
 
 const server_url = "https://proton-db.pockethost.io"
 const pb = new PocketBase(server_url)
 
-export default function Home(props: any) {
+interface HomeProps extends BaseComponentProps {}
+
+export default function Home<FC>(props: HomeProps) {
     const [currentPage, setPage] = useState(0)
     const [currentUser, setCurrentUser] = useState(pb.authStore.model)
 
@@ -38,31 +41,23 @@ export default function Home(props: any) {
                     onClick={() => setPage(0)}
                     rounded
                 >
-                    <p>
-                        {currentUser ? currentUser.username : "Sign In"}
-                    </p>
+                    {currentUser ? currentUser.username : "Sign In"}
                 </SidebarItem>
                 <Separator />
                 <SidebarItem
                     icon={<img src={getAsset("dashboard.png")}/>}
                     onClick={() => setPage(1)}
                 >
-                    <p>
-                        Dashboard
-                    </p>
+                    Dashboard
                 </SidebarItem>
                 <SidebarItem icon={<img src={getAsset("folder.png")}/>}>
-                    <p>
-                        Projects
-                    </p>
+                    Projects
                 </SidebarItem>
                 <SidebarItem icon={<img src={getAsset("cogwheel.png")}/>} style={{
                     position: "absolute",
                     bottom: "0"
                 }}>
-                    <p>
-                        Settings
-                    </p>
+                    Settings
                 </SidebarItem>
             </Sidebar>
             <div className='page'>

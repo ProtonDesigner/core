@@ -1,7 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import "./dashboard.scss"
 
-export default function Dashboard(props: any) {
+import PocketBase from "pocketbase"
+
+interface DashboardProps {
+    pb: PocketBase
+    currentUser: any
+    setCurrentUser(newState: any): any
+}
+
+export default function Dashboard<FC>(props: DashboardProps) {
     const [projectName, setProjectName] = useState("")
     // WHY DID WE HAVE TO GO TO C++ LAND :(((( https://stackoverflow.com/a/60696264/20616402
     const [projects, setProjects] = useState<any[]>([])
@@ -9,15 +17,11 @@ export default function Dashboard(props: any) {
     useEffect(() => {
         if (!props.currentUser) return () => {};
         async function getData() {
-            try {
-                const resultList = await props.pb.collection("projects").getFullList(100, {
-                    filter: `user = "${props.currentUser.id}"`
-                })
-                // console.log(resultList)
-                setProjects(resultList)
-            } catch (err) {
-                console.log(err)
-            }
+            const resultList = await props.pb.collection("projects").getFullList(100, {
+                filter: `user = "${props.currentUser.id}"`
+            })
+            // console.log(resultList)
+            setProjects(resultList)
         }
         getData()
     }, [])

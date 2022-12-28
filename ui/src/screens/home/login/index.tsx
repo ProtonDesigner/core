@@ -1,6 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, FC } from 'react';
+import "./login.scss"
 
-export default function Login(props: any) {
+import PocketBase from "pocketbase"
+
+interface LoginProps {
+    pb: PocketBase
+    currentUser: any
+    setCurrentUser(newState: any): any
+}
+
+export default function Login<FC>(props: LoginProps) {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConfirm, setPasswordConfirm] = useState("")
