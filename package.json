@@ -2,15 +2,20 @@
   "name": "proton",
   "version": "0.0.2",
   "description": "Proton Designer Rewrite",
-  "main": "main.js",
+  "main": "main.ts",
   "repository": "https://github.com/ProtonDesigner/rewrite",
   "author": "TechStudent10",
   "license": "MIT",
   "devDependencies": {
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.10",
     "concurrently": "^7.6.0",
     "electron": "^22.0.0",
     "electron-builder": "^23.6.0",
-    "svg-url-loader": "^7.1.1"
+    "svg-url-loader": "^7.1.1",
+    "ts-loader": "^9.4.2",
+    "tsc": "^2.0.4",
+    "typescript": "^4.9.4"
   },
   "dependencies": {
     "@babel/core": "^7.19.6",
@@ -40,7 +45,7 @@
     "watch:www": "cd ui && webpack --mode development --watch",
     "build:www": "cd ui && webpack --mode production",
     "build:app": "electron-builder",
-    "build": "yarn build:www && yarn build:app",
+    "build": "yarn build:www && tsc && yarn build:app",
     "dev": "concurrently -n electron,watch:www \"yarn:electron*\" \"yarn:watch:www\"",
     "postinstall": "electron-builder install-app-deps"
   },

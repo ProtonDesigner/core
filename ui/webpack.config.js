@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
 
 var config = {
-  entry: "./src/index.js",
+  entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
@@ -52,6 +52,11 @@ var config = {
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
+      },
+      {
+        test: /\.tsx?$/,
+        use: "ts-loader",
+        exclude: /node_modules/,
       }
     ],
   },
@@ -59,20 +64,37 @@ var config = {
     minimize: true,
   },
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("production"),
-      },
-    }),
     new NodePolyfillPlugin()
-  ]
+  ],
+  resolve: {
+    extensions: [".tsx", ".ts", ".js"]
+  }
 };
 
 module.exports = (env, argv) => {
+  let plugins = []
   if (argv.mode === "development") {
     config.optimization.minimize = false;
+    plugins.push(
+      new webpack.DefinePlugin({
+        "process.env": {
+          // This has effect on the react lib size
+          NODE_ENV: JSON.stringify("development"),
+        },
+      }),
+    )
+  } else {
+    plugins.push(
+      new webpack.DefinePlugin({
+        "process.env": {
+          // This has effect on the react lib size
+          NODE_ENV: JSON.stringify("production"),
+        },
+      }),
+    )
   }
+
+  plugins.push(new NodePolyfillPlugin())
 
   return config;
 }

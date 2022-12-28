@@ -1,28 +1,43 @@
-.sidebar {
-    width: 200px;
-    height: 100vh;
-    background-color: darkgrey;
-    .item {
-        display: flex;
-        align-items: center;
-        width: calc(100% - 10px);
-        padding: 5px;
+$sidebar-width: 150px;
 
-        p {
-            padding-left: 5px;
-        }
+.home {
+    .sidebar {
+        width: $sidebar-width;
+        height: 100vh;
+        background-color: darkgrey;
+        position: relative;
+        .item {
+            display: flex;
+            align-items: center;
+            width: calc(100% - 10px);
+            padding: 5px;
 
-        .icon {
-            width: 50px;
-            height: 50px;
-
-            img {
-                width: 100%;
-                height: 100%;
-                border-radius: inherit;
+            p {
+                padding-left: 5px;
             }
 
-            border-radius: 50rem;
+            .icon {
+                width: 30px;
+                height: 30px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: inherit;
+                }
+            }
+
+            &:hover {
+                background-color: hsl(0, 0%, 50%);
+            }
+
+            cursor: pointer;
         }
+    }
+
+    .page {
+        position: absolute;
+        left: $sidebar-width + 10px;
+        top: 10px;
     }
 }
