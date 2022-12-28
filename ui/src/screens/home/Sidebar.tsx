@@ -4,11 +4,11 @@ import * as path from "path"
 
 const baseAssetPath = path.join(".", "assets", "home")
 
-export function getAsset(assetName) {
+export function getAsset(assetName: string) {
     return path.join(baseAssetPath, assetName)
 }
 
-export function SidebarItem (props) {
+export function SidebarItem (props: any) {
     return <div className="item" onClick={props.onClick} style={props.style}>
         <div className="icon" style={{
             borderRadius: props.rounded ? "50rem" : 0
@@ -17,7 +17,7 @@ export function SidebarItem (props) {
     </div>
 }
 
-export default function Sidebar(props) {
+export default function Sidebar(props: any) {
     return <div className='sidebar'>
         {props.children}
     </div>

@@ -7,23 +7,17 @@ import Editor from "./screens/editor/Editor"
 
 import "./main.scss"
 
-const pages = {
-    "home": {
-        component: Home
-    },
-    "settings": {
-        component: Settings
-    },
-    "editor": {
-        component: Editor
-    }
-}
+const pages = [
+    Home,
+    Settings,
+    Editor
+]
 
-function App(props) {
+function App(props: any) {
     const [state, setState] = useState({})
-    const [currentPage, setPage] = useState("home")
+    const [currentPage, setPage] = useState(0)
 
-    let Screen = pages[currentPage].component
+    let Screen = pages[currentPage]
 
     return <Screen className="app" state={state} setState={setState} setPage={setPage} />
 }

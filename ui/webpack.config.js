@@ -59,20 +59,34 @@ var config = {
     minimize: true,
   },
   plugins: [
-    new webpack.DefinePlugin({
-      "process.env": {
-        // This has effect on the react lib size
-        NODE_ENV: JSON.stringify("production"),
-      },
-    }),
     new NodePolyfillPlugin()
   ]
 };
 
 module.exports = (env, argv) => {
+  let plugins = []
   if (argv.mode === "development") {
     config.optimization.minimize = false;
+    plugins.push(
+      new webpack.DefinePlugin({
+        "process.env": {
+          // This has effect on the react lib size
+          NODE_ENV: JSON.stringify("development"),
+        },
+      }),
+    )
+  } else {
+    plugins.push(
+      new webpack.DefinePlugin({
+        "process.env": {
+          // This has effect on the react lib size
+          NODE_ENV: JSON.stringify("production"),
+        },
+      }),
+    )
   }
+
+  plugins.push(new NodePolyfillPlugin())
 
   return config;
 }
