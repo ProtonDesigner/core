@@ -1,6 +1,7 @@
-const { app, BrowserWindow } = require('electron')
-const path = require('path')
-const { autoUpdater } = require("electron-updater");
+import { app, BrowserWindow } from 'electron';
+import path from 'path';
+import { autoUpdater } from "electron-updater";
+import installExtension, { REACT_DEVELOPER_TOOLS } from "electron-devtools-installer"
 
 app.on("ready", () => {
 	autoUpdater.checkForUpdatesAndNotify();
@@ -18,9 +19,17 @@ function createWindow () {
     })
 
     win.loadFile(path.join(__dirname, 'ui', 'index.html'))
+
+    if (!app.isPackaged) {
+        win.webContents.openDevTools()
+    }
 }
 
 app.whenReady().then(() => {
+    installExtension(REACT_DEVELOPER_TOOLS)
+        .then((ex_name) => console.log(`Added "${ex_name}" Extension`))
+        .catch((err) => console.log("An error occured when attempting to install extensions:", err))
+
     createWindow()
 
     app.on('activate', () => {
