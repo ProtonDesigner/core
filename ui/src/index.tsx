@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
 
 import Home from "./screens/home/Home"
 import Settings from "./screens/settings/Settings"
@@ -19,8 +19,11 @@ function App(props: any) {
 
     let Screen = pages[currentPage]
 
-    return <Screen className="app" state={state} setState={setState} setPage={setPage} />
+    return <React.StrictMode>
+        <Screen className="app" state={state} setState={setState} setPage={setPage} />
+    </React.StrictMode>
 }
 
-const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+const node = document.getElementById("app");
+const root = createRoot(node!)
+root.render(<App />)
