@@ -17,7 +17,7 @@ export default function Home<FC>(props: HomeProps) {
     const [currentPage, setPage] = useState(0)
     const [currentUser, setCurrentUser] = useState(pb.authStore.model)
 
-
+    props.setLoading(false)
     console.log(currentPage)
     useEffect(() => {
         pb.authStore.onChange((auth) => {
