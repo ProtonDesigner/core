@@ -1,4 +1,5 @@
 $sidebar-width: 150px;
+$page-padding: 10px;
 
 .home {
     .sidebar {
@@ -37,7 +38,7 @@ $sidebar-width: 150px;
 
     .page {
         position: absolute;
-        left: $sidebar-width + 10px;
-        top: 10px;
+        left: $sidebar-width + $page-padding;
+        top: $page-padding;
     }
 }

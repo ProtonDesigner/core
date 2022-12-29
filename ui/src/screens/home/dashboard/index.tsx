@@ -7,6 +7,20 @@ interface DashboardProps {
     pb: PocketBase
     currentUser: any
     setCurrentUser(newState: any): any
+    setCurrentPage(newState: any): any
+    setState(newState: any): any
+    state: object
+}
+
+interface ProjectCard {
+    projectName: string
+}
+
+function ProjectCard<FC>(props: ProjectCard) {
+    return <div className="project__card">
+        <h4>{props.projectName}</h4>
+        <button>Open</button>
+    </div>
 }
 
 export default function Dashboard<FC>(props: DashboardProps) {
@@ -42,7 +56,7 @@ export default function Dashboard<FC>(props: DashboardProps) {
     return <div className="dashboard">
         <h2>Dashboard</h2>
         {props.currentUser ? <>
-                <h5>Create project</h5>
+                <h3>Create project</h3>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <input
                         type="text"
@@ -51,11 +65,13 @@ export default function Dashboard<FC>(props: DashboardProps) {
                         placeholder="Project Name"
                     />
                     <button onClick={() => createProject()}>Create</button>
-                    <h5>Projects</h5>
-                    {projects && projects.map(project => {
-                        return project.name
-                    })}
                 </form>
+                <h3>Projects</h3>
+                <div className="projects">
+                    {JSON.stringify(projects) !== JSON.stringify([]) ? projects.map(project => {
+                        return <ProjectCard projectName={project.name} />
+                    }) : <p>Loading...</p>}
+                </div>
             </> : "Please login to create a project."
         }
     </div>

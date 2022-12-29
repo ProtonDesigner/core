@@ -1,0 +1,36 @@
+@use "../Home";
+
+.dashboard {
+    width: calc(100vw - Home.$sidebar-width - Home.$page-padding);
+    .projects {
+        display: flex;
+        flex-wrap: wrap;
+        .project__card {
+            padding: 15px;
+            box-shadow: 0px 0px 40px 5px rgba(0,0,0,0.20);
+            width: 125px;
+            border-radius: 0.7rem;
+
+            text-align: left;
+            margin-right: 10px;
+            margin-bottom: 10px;
+
+            h4 {
+                padding: 2px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            button {
+                background-color: inherit;
+                border: hsl(180, 100%, 35%) 2px solid;
+                outline: 0;
+                color: hsl(180, 100%, 25%);
+                padding: 5px;
+                border-radius: inherit;
+                cursor: pointer;
+            }
+        }
+    }
+}

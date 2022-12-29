@@ -61,7 +61,7 @@ export default function Home<FC>(props: HomeProps) {
                 </SidebarItem>
             </Sidebar>
             <div className='page'>
-                <Component pb={pb} currentUser={currentUser} setCurrentUser={setCurrentUser} />
+                <Component pb={pb} currentUser={currentUser} setCurrentUser={setCurrentUser} state={props.state} setState={props.setState} setCurrentPage={props.setPage} />
             </div>
         </div>
     )
