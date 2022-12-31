@@ -14,12 +14,13 @@ interface DashboardProps {
 
 interface ProjectCard {
     projectName: string
+    onOpen(e: any): any
 }
 
 function ProjectCard<FC>(props: ProjectCard) {
     return <div className="project__card">
         <h4>{props.projectName}</h4>
-        <button>Open</button>
+        <button onClick={props.onOpen}>Open</button>
     </div>
 }
 
@@ -69,7 +70,13 @@ export default function Dashboard<FC>(props: DashboardProps) {
                 <h3>Projects</h3>
                 <div className="projects">
                     {JSON.stringify(projects) !== JSON.stringify([]) ? projects.map(project => {
-                        return <ProjectCard projectName={project.name} />
+                        return <ProjectCard projectName={project.name} onOpen={(e) => {
+                            props.setState({
+                                ...props.state,
+                                projectId: project.id
+                            })
+                            props.setCurrentPage(2)
+                        }} key={Math.random()} />
                     }) : <p>Loading...</p>}
                 </div>
             </> : "Please login to create a project."

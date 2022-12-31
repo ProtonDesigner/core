@@ -4,12 +4,11 @@ import "./Home.scss"
 import Sidebar, { SidebarItem, getAsset } from "./Sidebar"
 import Separator from '../../components/Separator'
 import Dashboard from './dashboard'
-import PocketBase from "pocketbase"
 import Login from './login'
-import BaseComponentProps from '../../BaseComponentProps'
 
-const server_url = "https://proton-db.pockethost.io"
-const pb = new PocketBase(server_url)
+import pb from '../../libs/pocketbase'
+
+import BaseComponentProps from '../../BaseComponentProps'
 
 interface HomeProps extends BaseComponentProps {}
 
@@ -17,7 +16,6 @@ export default function Home<FC>(props: HomeProps) {
     const [currentPage, setPage] = useState(0)
     const [currentUser, setCurrentUser] = useState(pb.authStore.model)
 
-    props.setLoading(false)
     console.log(currentPage)
     useEffect(() => {
         pb.authStore.onChange((auth) => {
@@ -61,7 +59,14 @@ export default function Home<FC>(props: HomeProps) {
                 </SidebarItem>
             </Sidebar>
             <div className='page'>
-                <Component pb={pb} currentUser={currentUser} setCurrentUser={setCurrentUser} state={props.state} setState={props.setState} setCurrentPage={props.setPage} />
+                <Component
+                    pb={pb}
+                    currentUser={currentUser}
+                    setCurrentUser={setCurrentUser}
+                    state={props.state}
+                    setCurrentPage={props.setPage}
+                    setState={props.setState}
+                />
             </div>
         </div>
     )

@@ -1,8 +1,6 @@
 export default interface BaseComponentProps {
     className: string
-    state: Object
-    loading: boolean
+    state: any
     setState(newState: Object): void
     setPage(newState: number): void
-    setLoading(newState: boolean): void
 }

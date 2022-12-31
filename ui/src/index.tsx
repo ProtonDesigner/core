@@ -16,11 +16,9 @@ const pages = [
 function App<FC>(props: any) {
     const [state, setState] = useState({})
     const [currentPage, setPage] = useState(0)
-    const [loading, setLoading] = useState(true)
 
     const setNewPage = (page: number) => {
         setPage(page)
-        setLoading(false)
     }
 
     let Screen = pages[currentPage]
@@ -31,10 +29,7 @@ function App<FC>(props: any) {
             state={state}
             setState={setState}
             setPage={setNewPage}
-            setLoading={setLoading}
-            loading={loading}
         />
-        {loading ? <p>Loading</p> : ""}
     </React.StrictMode>
 }
 
