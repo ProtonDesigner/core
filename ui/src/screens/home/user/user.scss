@@ -1,0 +1,35 @@
+.user__page {
+    // .logged__in {
+        
+    // }
+    button {
+        border: 1px solid hsl(0, 0%, 40%);
+        outline: none;
+        background-color: transparent;
+        padding: 4px;
+        border-radius: 0.5rem;
+    }
+    input {
+        outline: 0;
+        border: 0;
+        background-color: grey;
+        border-radius: 0.5rem;
+        padding: 5px;
+        color: white;
+
+        &::placeholder {
+            color: white;
+        }
+    }
+    .error {
+        color: red;
+    }
+    .login__page, .signup__page {
+        text-align: center;
+        margin: 0.5rem;
+    }
+    a {
+        color: hsl(240, 100%, 35%);
+        cursor: pointer;
+    }
+}

@@ -4,7 +4,7 @@ import "./Home.scss"
 import Sidebar, { SidebarItem, getAsset } from "./Sidebar"
 import Separator from '../../components/Separator'
 import Dashboard from './dashboard'
-import Login from './login'
+import User from './user'
 
 import pb from '../../libs/pocketbase'
 
@@ -25,7 +25,7 @@ export default function Home<FC>(props: HomeProps) {
     })
 
     const pages = [
-        Login,
+        User,
         Dashboard
     ]
 
