@@ -1,8 +1,10 @@
 import React, { useState, useEffect, FC } from "react"
 import BaseComponentProps from "../../BaseComponentProps";
-import TextElement from "../../libs/elements/TextElement";
 import pb from "../../libs/pocketbase";
 import "./Editor.scss"
+import Hierarchy from "./Hierarchy";
+import Inspector from "./Inspector";
+import Tools from "./Tools";
 
 interface EditorProps extends BaseComponentProps {}
 
@@ -21,12 +23,12 @@ function Editor<FC>(props: EditorProps) {
         }
     }, [])
 
-    const TextComponent = new TextElement().render
 
     return <div className={`${props.className} editor`}>
         {loaded ? <>
-            <p>{project.name}</p>
-            <TextComponent />
+            <Tools />
+            <Hierarchy />
+            <Inspector />
         </> : "Loading..."}
     </div>
 }

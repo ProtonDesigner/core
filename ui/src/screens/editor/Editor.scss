@@ -1,0 +1,48 @@
+$tools-height: 50px;
+
+.editor {
+    .tools, .hierarchy, .inspector {
+        // Positioning
+        position: absolute;
+        top: 0;
+    }
+
+    .tools, .hierarchy {
+        left: 0;
+    }
+
+    .inspector {
+        right: 0;
+    }
+
+    .hierarchy, .inspector {
+        height: calc(100vh - $tools-height);
+        margin-top: $tools-height;
+    }
+
+    .tools {
+        width: 100vw;
+        height: $tools-height;
+        background-color: grey;
+
+        .toolButton {
+            width: $tools-height;
+            height: $tools-height;
+
+            img {
+                width: inherit;
+                height: inherit;
+            }
+        }
+    }
+
+    .hierarchy {
+        background-color: darkgrey;
+        width: 150px;
+    }
+
+    .inspector {
+        background-color: lightgrey;
+        width: 250px;
+    }
+}
