@@ -1,6 +1,9 @@
 import React from 'react';
 
-interface HierarchyProps {}
+interface HierarchyProps {
+    project?: any
+    setElementDialog?: any
+}
 interface HierarchyItemProps {
     name: string
     icon: JSX.Element
@@ -17,5 +20,6 @@ function HierarchyItem(props: HierarchyItemProps) {
 export default function Hierarchy(props: HierarchyProps) {
     return <div className="hierarchy">
         <HierarchyItem name="Text" icon={<>Icon</>} />
+        <button onClick={() => props.setElementDialog(true)}>Add element</button>
     </div>
 }

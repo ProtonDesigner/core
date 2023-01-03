@@ -1,0 +1,42 @@
+.dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 0.7rem;
+    padding: 15px;
+    box-shadow: 0px 0px 45px 0px rgba(0,0,0,0.75);
+    z-index: 10;
+    background-color: white;
+
+    display: none;
+    &.show {
+        display: block;
+    }
+    img {
+        width: 15px;
+        height: 15px;
+        cursor: pointer;
+    }
+    .top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9;
+
+    display: none;
+    &.show {
+        display: block;
+    }
+}
