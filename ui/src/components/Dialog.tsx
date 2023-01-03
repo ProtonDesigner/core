@@ -9,12 +9,13 @@ interface DialogProps {
     title?: string
     show: boolean
     setShow: (value: boolean) => void
+    className?: string
 }
 
 export default function Dialog<FC>(props: DialogProps) {
     return <>
         <div className={`screen ${props.show ? "show" : ""}`} />
-        <div className={`dialog ${props.show ? "show" : ""}`} style={props.style}>
+        <div className={`dialog ${props.show ? "show" : ""} ${props.className}`} style={props.style}>
             <div className="top">
                 {props.title && <h2>{props.title}</h2>}
                 <img className="close__btn" src={getAsset(".", "mul.png")} onClick={() => props.setShow(false)} />

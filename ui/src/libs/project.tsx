@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidV4 } from 'uuid';
 
 interface Project {
     elements: {
@@ -58,7 +59,7 @@ class Project {
 }
 class ProjectElement {
     constructor() {
-        this.uid = ""
+        this.uid = uuidV4()
         this.name = "Element"
         this.properties = new ElementProperties()
 
@@ -122,7 +123,7 @@ class ElementProperty {
     constructor(name: string, value: any) {
         this.value = value
         this.name = name
-        this.uid = ""
+        this.uid = uuidV4()
         this.editable = true
     }
 

@@ -45,4 +45,27 @@ $tools-height: 50px;
         background-color: lightgrey;
         width: 250px;
     }
+
+    .element__parent {
+        width: 350px;
+        .element__list {
+            width: 100%;
+
+            .elements__item {
+                display: flex;
+                align-items: center;
+                justify-content: space-around;
+                padding: 5px;
+                background-color: hsl(0, 0%, 95%);
+
+                button {
+                    padding: 5px;
+                    border-radius: 0.4rem;
+                    cursor: pointer;
+                }
+
+                border-radius: 0.7rem;
+            }
+        }
+    }
 }
