@@ -1,4 +1,7 @@
 $tools-height: 50px;
+$hierarchy-width: 150px;
+$inspector-width: 250px;
+$console-height: 150px;
 
 .editor {
     .tools, .hierarchy, .inspector {
@@ -38,12 +41,47 @@ $tools-height: 50px;
 
     .hierarchy {
         background-color: darkgrey;
-        width: 150px;
+        width: $hierarchy-width;
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px;
+            cursor: pointer;
+            
+            img {
+                --size: 30px;
+                width: var(--size);
+                height: var(--size);
+            }
+
+            &:hover, &.active {
+                background-color: hsl(0, 0%, 35%)
+            }
+        }
     }
 
     .inspector {
         background-color: lightgrey;
-        width: 250px;
+        width: $inspector-width;
+
+        h2 {
+            padding: 2px;
+            text-align: center;
+        }
+    }
+
+    .preview {
+        position: absolute;
+        top: $tools-height;
+        left: $hierarchy-width;
+        height: calc(100vh - $tools-height);
+        width: calc(100vw - $inspector-width - $hierarchy-width);
+
+        &.full {
+            width: calc(100vw - $hierarchy-width)
+        }
     }
 
     .element__parent {
@@ -65,6 +103,67 @@ $tools-height: 50px;
                 }
 
                 border-radius: 0.7rem;
+            }
+        }
+    }
+
+    .console {
+        width: calc(100vw - $hierarchy-width);
+        height: $console-height;
+
+        position: absolute;
+        bottom: 0;
+        left: $hierarchy-width;
+        background-color: hsl(0, 0%, 70%);
+
+        overflow-y: scroll;
+        border-top: 3px solid hsl(0, 0%, 75%);
+
+        &.dextend {
+            width: calc(100vw - $hierarchy-width - $inspector-width);
+        }
+
+        // Custom scrollbar courtesy of https://www.w3schools.com/howto/howto_css_custom_scrollbar.aspok 
+        /* width */
+        &::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1; 
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: #888; 
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: #555; 
+        }
+
+        .console__message {
+            padding: 8px;
+            overflow-wrap: break-word;
+
+            &.info {
+                background-color: hsl(0, 0%, 30%);
+                border-top: 2px solid hsl(0, 0%, 25%);
+                border-bottom: 2px solid hsl(0, 0%, 25%);
+            }
+
+            &.warn {
+                background-color: hsl(55, 100%, 30%);
+                border-top: 2px solid hsl(55, 100%, 25%);
+                border-bottom: 2px solid hsl(55, 100%, 25%);
+            }
+
+            &.error {
+                background-color: hsl(0, 100%, 30%);
+                border-top: 2px solid hsl(0, 100%, 25%);
+                border-bottom: 2px solid hsl(0, 100%, 25%);
             }
         }
     }

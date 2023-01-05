@@ -5,10 +5,11 @@ import "./Editor.scss"
 import Hierarchy from "./Hierarchy";
 import Inspector from "./Inspector";
 import Tools from "./Tools";
-import Project, { ProjectElement } from "../../libs/project"
+import { ProjectElement } from "../../libs/project"
 import Dialog from "../../components/Dialog";
 import Preview from "./Preview";
 import ELEMENT_LIST from "../../libs/elements/list";
+import Console from "./Console";
 
 interface EditorProps extends BaseComponentProps {}
 
@@ -17,6 +18,19 @@ function Editor<FC>(props: EditorProps) {
     const [project, setProject] = useState<any>({})
     const [showElementDialog, setElementDialog] = useState(false)
     const [elements, setElements] = useState<any>({})
+    const [currentElementUID, setCurrentElementUID] = useState<any>(null)
+    const [render, forceRerender] = useState(0)
+    const [consoleMessages, setConsoleMessages] = useState<any>([])
+
+    function log(message: string, type: string) {
+        const newConsoleMessages = consoleMessages
+        newConsoleMessages.push({
+            message,
+            type
+        })
+        setConsoleMessages([...newConsoleMessages])
+    }
+
 
     function addElement(element: ProjectElement) {
         elements[element.uid] = element
@@ -37,6 +51,7 @@ function Editor<FC>(props: EditorProps) {
 
     return <div className={`${props.className} editor`}>
         {loaded ? <>
+            <Preview elements={elements} currentElementUID={currentElementUID} />
             <Tools />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
@@ -46,17 +61,34 @@ function Editor<FC>(props: EditorProps) {
                             <h4>{Element.name}</h4>
                             <button onClick={() => {
                                 const newElement = new Element()
+                                let amountOfNames = 0
+                                Object.keys(elements).map(key => {
+                                    const element: ProjectElement = elements[key]
+                                    if (element.name.replace(/\d+$/, "") === newElement.name) {
+                                        amountOfNames += 1
+                                    }
+                                })
+                                newElement.name = `${newElement.name}${amountOfNames}`
                                 addElement(newElement)
-                                console.log(`added ${Element.name}`)
+                                log(`added ${Element.name}`, "info")
                                 setElementDialog(false)
                             }}>Add</button>
                         </div>
                     })}
                 </div>
             </Dialog>
-            <Hierarchy project={project} setElementDialog={setElementDialog} />
-            <Inspector />
-            <Preview elements={elements} />
+            <Hierarchy
+                elements={elements}
+                setElementDialog={setElementDialog}
+                currentElementUID={currentElementUID}
+                setCurrentElementUID={setCurrentElementUID}
+            />
+            <Inspector
+                elements={elements}
+                currentElementUID={currentElementUID}
+                forceRerender={forceRerender}
+            />
+            <Console messages={consoleMessages} setMessages={setConsoleMessages} currentElementUID={currentElementUID} />
         </> : "Loading..."}
     </div>
 }
