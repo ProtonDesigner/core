@@ -10,8 +10,14 @@ import Dialog from "../../components/Dialog";
 import Preview from "./Preview";
 import ELEMENT_LIST from "../../libs/elements/list";
 import Console from "./Console";
+import ThemeLoader from "../../libs/theme";
+
+import * as path from "path"
 
 interface EditorProps extends BaseComponentProps {}
+
+const themeLoader = new ThemeLoader();
+console.log(themeLoader.getTheme(path.join("../../libs/theme/example.json")))
 
 function Editor<FC>(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)
@@ -51,7 +57,7 @@ function Editor<FC>(props: EditorProps) {
 
     return <div className={`${props.className} editor`}>
         {loaded ? <>
-            <Preview elements={elements} currentElementUID={currentElementUID} />
+            <Preview elements={elements} currentElementUID={currentElementUID} type="desktop" />
             <Tools />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">

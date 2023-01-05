@@ -1,0 +1,14 @@
+{
+    "dashboard": {
+        "sidebar": {
+            "background-color": "rgb(255, 255, 255)",
+            "button": "rgb(255, 255, 255)",
+            "button:hover": "rgb(255, 255, 255)"
+        },
+        "background-color": "rgb(255, 255, 255)"
+    },
+    "editor": {
+        "background-color": "rgb(255, 255, 255)"
+    },
+    "etc": "etc..."
+}

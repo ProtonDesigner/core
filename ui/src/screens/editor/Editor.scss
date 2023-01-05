@@ -74,13 +74,27 @@ $console-height: 150px;
 
     .preview {
         position: absolute;
-        top: $tools-height;
-        left: $hierarchy-width;
-        height: calc(100vh - $tools-height);
-        width: calc(100vw - $inspector-width - $hierarchy-width);
+
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        
+        border-radius: 0.5rem;
+        border: 5px solid black;
+
+        // top: $tools-height;
+        // left: $hierarchy-width;
+        // height: calc(100vh - $tools-height);
+        // width: calc(100vw - $inspector-width - $hierarchy-width);
 
         &.full {
             width: calc(100vw - $hierarchy-width)
+        }
+
+        // TODO: fix widths and heights because they look crap
+        &.desktop {
+            width: 425px;
+            height: 212.5px;
         }
     }
 
