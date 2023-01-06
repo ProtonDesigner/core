@@ -1,7 +1,9 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { autoUpdater } = require("electron-updater");
 const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
+
+const settings = require("electron-settings")
 
 app.on("ready", () => {
 	autoUpdater.checkForUpdatesAndNotify();
@@ -32,6 +34,20 @@ app.whenReady().then(() => {
         .catch((err) => console.log("An error occured when attempting to install extensions:", err))
 
     createWindow()
+
+    ipcMain.handle("settings:get", (event) => {
+        console.log("settings")
+        const getSettings = async () => {
+            let result
+            await settings.get("settings").then(data => {
+                result = data
+                console.log(data)
+            })
+            console.log(result)
+            return result
+        }
+        return getSettings()
+    })
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

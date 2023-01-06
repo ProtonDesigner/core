@@ -13,7 +13,7 @@ import BaseComponentProps from '../../BaseComponentProps'
 interface HomeProps extends BaseComponentProps {}
 
 export default function Home<FC>(props: HomeProps) {
-    const [currentPage, setPage] = useState(0)
+    const [currentPage, setPage] = useState(1)
     const [currentUser, setCurrentUser] = useState(pb.authStore.model)
 
     console.log(currentPage)

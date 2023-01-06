@@ -17,7 +17,7 @@ import * as path from "path"
 interface EditorProps extends BaseComponentProps {}
 
 const themeLoader = new ThemeLoader();
-console.log(themeLoader.getTheme(path.join("../../libs/theme/example.json")))
+console.log(themeLoader.getTheme("example.js"))
 
 function Editor<FC>(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)

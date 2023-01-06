@@ -1,7 +1,7 @@
 $tools-height: 50px;
 $hierarchy-width: 150px;
 $inspector-width: 250px;
-$console-height: 150px;
+$console-height: 130px;
 
 .editor {
     .tools, .hierarchy, .inspector {
@@ -91,10 +91,9 @@ $console-height: 150px;
             width: calc(100vw - $hierarchy-width)
         }
 
-        // TODO: fix widths and heights because they look crap
         &.desktop {
-            width: 425px;
-            height: 212.5px;
+            width: 50rem;
+            height: 22rem;
         }
     }
 

@@ -1,5 +1,5 @@
 export interface IElectronAPI {
-    readThemeFile: (themeFilePath: string, callback: any) => {},
+    getSettings: () => {},
 }
 
 declare global {
