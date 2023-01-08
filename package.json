@@ -1,6 +1,6 @@
 {
   "name": "proton",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Proton Designer Rewrite",
   "main": "main.js",
   "repository": "https://github.com/ProtonDesigner/rewrite",
