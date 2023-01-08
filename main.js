@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { autoUpdater } = require("electron-updater");
-const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
 
 const settings = require("electron-settings")
 
@@ -29,9 +28,12 @@ function createWindow () {
 }
 
 app.whenReady().then(() => {
-    installExtension(REACT_DEVELOPER_TOOLS)
-        .then((ex_name) => console.log(`Added "${ex_name}" Extension`))
-        .catch((err) => console.log("An error occured when attempting to install extensions:", err))
+    if (!app.isPackaged) {
+        const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
+        installExtension(REACT_DEVELOPER_TOOLS)
+            .then((ex_name) => console.log(`Added "${ex_name}" Extension`))
+            .catch((err) => console.log("An error occured when attempting to install extensions:", err))
+    }
 
     createWindow()
 
