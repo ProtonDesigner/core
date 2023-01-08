@@ -5,10 +5,9 @@ import "./Editor.scss"
 import Hierarchy from "./Hierarchy";
 import Inspector from "./Inspector";
 import Tools from "./Tools";
-import { ProjectElement } from "../../libs/project"
+import { ProjectElement, Project, ELEMENT_LIST } from "../../libs/internal"
 import Dialog from "../../components/Dialog";
 import Preview from "./Preview";
-import ELEMENT_LIST from "../../libs/elements/list";
 import Console from "./Console";
 import ThemeLoader from "../../libs/theme";
 
@@ -21,12 +20,13 @@ console.log(themeLoader.getTheme("example.js"))
 
 function Editor<FC>(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)
-    const [project, setProject] = useState<any>({})
     const [showElementDialog, setElementDialog] = useState(false)
-    const [elements, setElements] = useState<any>({})
+    // const [elements, setElements] = useState<any>({})
     const [currentElementUID, setCurrentElementUID] = useState<any>(null)
     const [render, forceRerender] = useState(0)
     const [consoleMessages, setConsoleMessages] = useState<any>([])
+
+    const [project, setProject] = useState<Project>(new Project());
 
     function log(message: string, type: string) {
         const newConsoleMessages = consoleMessages
@@ -37,18 +37,26 @@ function Editor<FC>(props: EditorProps) {
         setConsoleMessages([...newConsoleMessages])
     }
 
+    function saveProject() {
+        const serializedProject = project?.serialize()
+        pb.collection('projects').update(project.id, serializedProject, {
+            "$autoCancel": false
+        })
+    }
 
     function addElement(element: ProjectElement) {
-        elements[element.uid] = element
+        project?.addElement(element)
+        saveProject()
     }
 
     useEffect(() => {
         async function getData() {
             const project_result = await pb.collection("projects").getOne(props.state.projectId)
-            setProject(project_result)
+            const newProject = new Project()
+            newProject.load(project_result)
+            setProject(newProject)
+            console.log(newProject)
             setLoaded(true)
-            console.log(project_result.elements)
-            setElements(project_result.elements)
         }
         if (!loaded) {
             getData()
@@ -57,7 +65,12 @@ function Editor<FC>(props: EditorProps) {
 
     return <div className={`${props.className} editor`}>
         {loaded ? <>
-            <Preview elements={elements} currentElementUID={currentElementUID} type="desktop" />
+            <Preview
+                project={project}
+                currentElementUID={currentElementUID}
+                type="desktop"
+                saveProject={saveProject}
+            />
             <Tools />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
@@ -68,14 +81,15 @@ function Editor<FC>(props: EditorProps) {
                             <button onClick={() => {
                                 const newElement = new Element()
                                 let amountOfNames = 0
-                                Object.keys(elements).map(key => {
-                                    const element: ProjectElement = elements[key]
+                                Object.keys(project.elements).map(key => {
+                                    const element: ProjectElement = project.elements[key]
                                     if (element.name.replace(/\d+$/, "") === newElement.name) {
                                         amountOfNames += 1
                                     }
                                 })
                                 newElement.name = `${newElement.name}${amountOfNames}`
                                 addElement(newElement)
+                                setCurrentElementUID(newElement.uid)
                                 log(`added ${Element.name}`, "info")
                                 setElementDialog(false)
                             }}>Add</button>
@@ -84,15 +98,18 @@ function Editor<FC>(props: EditorProps) {
                 </div>
             </Dialog>
             <Hierarchy
-                elements={elements}
+                project={project}
                 setElementDialog={setElementDialog}
                 currentElementUID={currentElementUID}
                 setCurrentElementUID={setCurrentElementUID}
+                saveProject={saveProject}
             />
             <Inspector
-                elements={elements}
+                project={project}
                 currentElementUID={currentElementUID}
                 forceRerender={forceRerender}
+                saveProject={saveProject}
+                setCurrentElement={setCurrentElementUID}
             />
             <Console messages={consoleMessages} setMessages={setConsoleMessages} currentElementUID={currentElementUID} />
         </> : "Loading..."}

@@ -95,6 +95,10 @@ $console-height: 130px;
             width: 50rem;
             height: 22rem;
         }
+
+        .element__container {
+            width: fit-content;
+        }
     }
 
     .element__parent {

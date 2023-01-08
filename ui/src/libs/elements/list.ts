@@ -1,8 +1,7 @@
-import { ProjectElement } from "../project";
-import TextElement from "./TextElement";
+import { TextElement } from "../internal";
 
 const ELEMENT_LIST: {[key: string]: any} = {
     "text": TextElement
 }
 
-export default ELEMENT_LIST
+export {ELEMENT_LIST}

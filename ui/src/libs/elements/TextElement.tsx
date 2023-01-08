@@ -1,9 +1,12 @@
 import React from "react";
-import { ElementProperty, ProjectElement } from "../project"
+import { ElementProperty, ProjectElement } from "../internal"
 
-export default class TextElement extends ProjectElement {
+// interface TextElement extends BaseElementType {}
+
+class TextElement extends ProjectElement {
     initialize() {
         this.name = "Text"
+        this.elementID = "text"
         this.properties.addProperty(new ElementProperty("text", "Hi!"))
     }
 
@@ -13,3 +16,5 @@ export default class TextElement extends ProjectElement {
         </div>
     }
 }
+
+export {TextElement}

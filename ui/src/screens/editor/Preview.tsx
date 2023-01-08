@@ -1,39 +1,62 @@
-import React, { useRef, RefObject } from "react";
-import { ProjectElement } from "../../libs/project";
-import Draggable from "react-draggable";
+import React, { useRef, RefObject, useEffect } from "react";
+import { ProjectElement } from "../../libs/internal";
+import { useDraggable, DragOptions } from "@neodrag/react";
 
 interface PreviewProps {
-    elements: any
+    project: any
     currentElementUID: any
     type: string
+    saveProject: () => any
 }
 
-// interface ContainerProps {
-//     elementUID: string
-//     children: any
-//     onDrag: (x: number, y: number) => any
-// }
+interface ContainerProps {
+    element: ProjectElement
+    children: any
+    parent: RefObject<HTMLDivElement>
+    saveProject: () => any
+}
 
-function ComponentContainer(props: any) {
+function ComponentContainer(props: ContainerProps) {
     const nodeRef = useRef(null) as RefObject<HTMLDivElement>
 
-    return <Draggable nodeRef={nodeRef} {...props}>
-        <div ref={nodeRef}>{props.children}</div>
-    </Draggable>
+    const options: DragOptions = {
+        bounds: ".preview",
+        position: {
+            x: props.element.properties.getProp("x"),
+            y: props.element.properties.getProp("y")
+        }
+    }
+
+    const { isDragging, dragState } = useDraggable(nodeRef, options)
+
+    useEffect(() => {
+        console.log(isDragging, dragState)
+
+        const offsetX = dragState?.offsetX
+        const offsetY = dragState?.offsetY
+        
+        props.element.properties.updateProperty("x", offsetX && offsetX < 0 ? 0 : offsetX)
+        props.element.properties.updateProperty("y", offsetY && offsetY < 0 ? 0 : offsetY)
+
+        props.saveProject()
+    }, [isDragging, dragState])
+
+    return <div ref={nodeRef} className="element__container">{props.children}</div>
 }
 
 export default function Preview(props: PreviewProps) {
-    console.log(props.elements)
+    console.log(props.project)
 
     const previewRef = useRef() as RefObject<HTMLDivElement>
 
     return <div className={`preview ${props.type}`} ref={previewRef}>
-        {props.elements && Object.keys(props.elements).map((element_index) => {
-            let element: ProjectElement = props.elements[element_index]
+        {props.project.elements && Object.keys(props.project.elements).map((element_index) => {
+            let element: ProjectElement = props.project.elements[element_index]
             let Component = element.render
             return <ComponentContainer
-                onDrag={(e: any, data: any) => console.log(data)}
-                bounds={`.preview`}
+                element={element}
+                parent={previewRef}
+                saveProject={props.saveProject}
             >
                 <Component />
             </ComponentContainer>

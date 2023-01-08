@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { ProjectElement } from '../../libs/project';
+import { ProjectElement, Project } from '../../libs/internal';
 
 interface InspectorProps {
     currentElementUID: string
-    elements: any
+    setCurrentElement: any
+    project: Project
     forceRerender: any
+    saveProject: any
 }
 
 function capitalizeFirstLetter(string: string)
@@ -15,7 +17,7 @@ function capitalizeFirstLetter(string: string)
 export default function Inspector(props: InspectorProps) {
     if (!props.currentElementUID) return <></>
     
-    const currentElement: ProjectElement = props.elements[props.currentElementUID]
+    const currentElement: ProjectElement = props.project.elements[props.currentElementUID]
     const properties = currentElement.properties.getAllProps()
 
     const [render, forceRerender] = useState(0)
@@ -34,9 +36,16 @@ export default function Inspector(props: InspectorProps) {
                         currentElement.properties.updateProperty(key, newValue)
                         forceRerender(render+1)
                         props.forceRerender(Math.random())
+                        props.saveProject()
                     }}
                 />
             </div>
         })}
+        <button onClick={() => {
+            props.project.deleteElement(props.currentElementUID)
+            props.setCurrentElement(null)
+            props.saveProject()
+
+        }}>Delete Element</button>
     </div>
 }

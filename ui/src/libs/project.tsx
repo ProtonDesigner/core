@@ -1,18 +1,22 @@
 import React from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
+import { ELEMENT_LIST } from './internal';
+
 interface Project {
     elements: {
         [key: string]: ProjectElement
     }
     name: string
+    id: string
 }
 
 interface ProjectElement {
     uid: string
     properties: ElementProperties
     name: string
-    render(): any
+    render(): any,
+    elementID: string
 }
 
 interface ElementProperty {
@@ -32,10 +36,15 @@ class Project {
     constructor() {
         this.elements = {}
         this.name = ""
+        this.id = ""
     }
 
     addElement(element: ProjectElement) {
         this.elements[element.uid] = element
+    }
+
+    deleteElement(elementUID: string) {
+        delete this.elements[elementUID]
     }
 
     serialize() {
@@ -49,20 +58,39 @@ class Project {
             serializedElements[element.uid] = serializedElement
         })
 
-        return JSON.stringify({
+        return {
             name: this.name,
-            elements: serializedElements
-        })
+            elements: serializedElements,
+        }
     }
 
-    load() {}
+    load(json: any) {
+        const elements: {
+            [key: string]: any
+        } = json.elements
+        const name: string = json.name
+
+        this.name = name
+        this.id = json.id
+        Object.keys(elements).map(key => {
+            const element = elements[key]
+            const elementID: string = element.elementID
+            const ElementConstructor = ELEMENT_LIST[elementID]
+            const newElement = new ElementConstructor()
+            newElement.load(element)
+            this.addElement(newElement)
+        })
+    }
 }
 class ProjectElement {
     constructor() {
         this.uid = uuidV4()
         this.name = "Element"
+        this.elementID = "generic"
         this.properties = new ElementProperties()
 
+        this.properties.addProperty(new ElementProperty("x", 0))
+        this.properties.addProperty(new ElementProperty("y", 0))
         this.initialize()
         this.render = this.render.bind(this)
     }
@@ -70,7 +98,9 @@ class ProjectElement {
     serialize() {
         return {
             uid: this.uid,
-            properties: this.properties.getAllProps()
+            properties: this.properties.getAllProps(),
+            elementID: this.elementID,
+            name: this.name
         }
     }
 
@@ -82,6 +112,13 @@ class ProjectElement {
 
     initialize() {
         console.log(`Component "${this.uid}" initialized!`)
+    }
+
+    load(json: any) {
+        this.uid = json.uid
+        this.name = json.name
+        this.elementID = json.elementID
+        this.properties.loadProperties(json.properties)
     }
 }
 
@@ -117,6 +154,15 @@ class ElementProperties {
         })
         return properties
     }
+
+    loadProperties(json: {
+        [key: string]: any
+    }) {
+        Object.keys(json).map(key => {
+            const property = json[key]
+            this.updateProperty(key, property)
+        })
+    }
 }
 
 class ElementProperty {
@@ -131,6 +177,13 @@ class ElementProperty {
         this.value = newValue
     }
 
+    load(json: any) {
+        this.value = json.value
+        this.name = json.name
+        this.uid = json.uid
+        this.editable = json.editable
+    }
+
     serialize() {
         return {
             name: this.name,
@@ -141,8 +194,9 @@ class ElementProperty {
     }
 }
 
-export default Project
 export {
     ProjectElement,
-    ElementProperty
+    ElementProperty,
+    ElementProperties,
+    Project
 }

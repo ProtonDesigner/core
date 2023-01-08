@@ -1066,6 +1066,11 @@
     lodash "^4.17.15"
     tmp-promise "^3.0.2"
 
+"@neodrag/react@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@neodrag/react/-/react-1.0.1.tgz#95aa5bd4bafa6588b44ec1effa8a145e58d0882f"
+  integrity sha512-xNh7ZOtcdVstmTdEoFaR2tRpWreDfxwP/qocs27n4ZaQuSS04K7Q+nOHDLcZsetguP6B8AarMHebjQpythSexg==
+
 "@remix-run/router@1.2.1":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.2.1.tgz#812edd4104a15a493dda1ccac0b352270d7a188c"

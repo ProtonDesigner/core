@@ -5,6 +5,7 @@ import Sidebar, { SidebarItem, getAsset } from "./Sidebar"
 import Separator from '../../components/Separator'
 import Dashboard from './dashboard'
 import User from './user'
+import Settings from './settings'
 
 import pb from '../../libs/pocketbase'
 
@@ -26,7 +27,8 @@ export default function Home<FC>(props: HomeProps) {
 
     const pages = [
         User,
-        Dashboard
+        Dashboard,
+        Settings
     ]
 
     let Component = pages[currentPage]
@@ -54,7 +56,7 @@ export default function Home<FC>(props: HomeProps) {
                 <SidebarItem icon={<img src={getAsset("cogwheel.png")}/>} style={{
                     position: "absolute",
                     bottom: "0"
-                }}>
+                }} onClick={() => setPage(2)}>
                     Settings
                 </SidebarItem>
             </Sidebar>
