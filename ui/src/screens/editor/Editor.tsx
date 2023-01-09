@@ -12,6 +12,7 @@ import Console from "./Console";
 import ThemeLoader from "../../libs/theme";
 
 import * as path from "path"
+import TextEditor from "./TextEditor";
 
 interface EditorProps extends BaseComponentProps {}
 
@@ -25,6 +26,8 @@ function Editor<FC>(props: EditorProps) {
     const [currentElementUID, setCurrentElementUID] = useState<any>(null)
     const [render, forceRerender] = useState(0)
     const [consoleMessages, setConsoleMessages] = useState<any>([])
+
+    const [currentPage, setCurrentPage] = useState(0)
 
     const [project, setProject] = useState<Project>(new Project());
 
@@ -64,14 +67,17 @@ function Editor<FC>(props: EditorProps) {
     }, [])
 
     return <div className={`${props.className} editor`}>
-        {loaded ? <>
+        <Tools
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+        />
+        {loaded ? (currentPage == 0 ? <>
             <Preview
                 project={project}
                 currentElementUID={currentElementUID}
                 type="desktop"
                 saveProject={saveProject}
             />
-            <Tools />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
                     {Object.keys(ELEMENT_LIST).map(element_id => {
@@ -112,7 +118,7 @@ function Editor<FC>(props: EditorProps) {
                 setCurrentElement={setCurrentElementUID}
             />
             <Console messages={consoleMessages} setMessages={setConsoleMessages} currentElementUID={currentElementUID} />
-        </> : "Loading..."}
+        </> : <TextEditor project={project} rerender={forceRerender} saveProject={saveProject} />) : "Loading..."}
     </div>
 }
 

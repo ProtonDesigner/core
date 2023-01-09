@@ -9,6 +9,9 @@ interface Project {
     }
     name: string
     id: string
+    scripts: {
+        [key: string]: any
+    }
 }
 
 interface ProjectElement {
@@ -32,11 +35,18 @@ interface ElementProperties {
     }
 }
 
+interface ProjectScript {
+    name: string
+    contents: string
+    uid: string
+}
+
 class Project {
     constructor() {
         this.elements = {}
         this.name = ""
         this.id = ""
+        this.scripts = {}
     }
 
     addElement(element: ProjectElement) {
@@ -45,6 +55,22 @@ class Project {
 
     deleteElement(elementUID: string) {
         delete this.elements[elementUID]
+    }
+
+    addScript(script: ProjectScript) {
+        this.scripts[script.uid] = script
+    }
+
+    updateScript(scriptUID: string, newValue: string) {
+        this.scripts[scriptUID].updateContents(newValue)
+    }
+
+    deleteScript(scriptUID: string) {
+        delete this.scripts[scriptUID]
+    }
+
+    getScripts() {
+        return this.scripts
     }
 
     serialize() {
@@ -58,9 +84,20 @@ class Project {
             serializedElements[element.uid] = serializedElement
         })
 
+        // Serialize scripts
+        let serializedScripts: {
+            [key: string]: {}
+        } = {}
+
+        Object.keys(this.scripts).map(key => {
+            const script: ProjectScript = this.scripts[key]
+            serializedScripts[script.uid] = script.serialize()
+        })
+
         return {
             name: this.name,
             elements: serializedElements,
+            scripts: serializedScripts
         }
     }
 
@@ -72,6 +109,7 @@ class Project {
 
         this.name = name
         this.id = json.id
+        this.scripts = json.scripts
         Object.keys(elements).map(key => {
             const element = elements[key]
             const elementID: string = element.elementID
@@ -82,6 +120,7 @@ class Project {
         })
     }
 }
+
 class ProjectElement {
     constructor() {
         this.uid = uuidV4()
@@ -194,9 +233,36 @@ class ElementProperty {
     }
 }
 
+class ProjectScript {
+    constructor(name: string, initialContents?: string) {
+        this.name = name
+        this.contents = initialContents || ""
+        this.uid = uuidV4()
+    }
+
+    updateContents(newContents: string) {
+        this.contents = newContents
+    }
+
+    load(json: any) {
+        this.name = json.name
+        this.contents = json.contents
+        this.uid = json.uid
+    }
+
+    serialize() {
+        return {
+            name: this.name,
+            contents: this.contents,
+            uid: this.uid
+        }
+    }
+}
+
 export {
     ProjectElement,
     ElementProperty,
     ElementProperties,
+    ProjectScript,
     Project
 }

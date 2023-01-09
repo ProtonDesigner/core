@@ -19,6 +19,8 @@ interface ContainerProps {
 function ComponentContainer(props: ContainerProps) {
     const nodeRef = useRef(null) as RefObject<HTMLDivElement>
 
+    console.log(props.element.properties.getProp("x"))
+
     const options: DragOptions = {
         bounds: ".preview",
         position: {

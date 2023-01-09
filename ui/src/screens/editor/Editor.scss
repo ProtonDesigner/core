@@ -28,6 +28,9 @@ $console-height: 130px;
         height: $tools-height;
         background-color: grey;
 
+        display: flex;
+        gap: 5px;
+
         .toolButton {
             width: $tools-height;
             height: $tools-height;

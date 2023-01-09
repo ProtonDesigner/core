@@ -2,7 +2,10 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { autoUpdater } = require("electron-updater");
 
-const settings = require("electron-settings")
+const settings = require("electron-settings");
+const { tmpdir } = require('os');
+
+const fs = require('fs');
 
 app.on("ready", () => {
 	autoUpdater.checkForUpdatesAndNotify();
@@ -27,6 +30,8 @@ function createWindow () {
     }
 }
 
+let tmpDir
+
 app.whenReady().then(() => {
     if (!app.isPackaged) {
         const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
@@ -50,6 +55,35 @@ app.whenReady().then(() => {
         }
         return getSettings()
     })
+
+    // When working with local scripts, use these functions
+    // ipcMain.handle("file:createTempScriptDir", (event, name, cb) => {
+    //     try {
+    //         tmpDir = fs.mkdtemp(path.join(tmpdir(), "proton", name))
+    //         cb(tmpDir)
+    //     } catch (e) {
+    //         console.error(e)
+    //     } finally {
+    //         try {
+    //             if (tmpDir) {
+    //                 fs.rm(tmpDir, { recursive: true })
+    //             } 
+    //         } catch (e) {
+    //             console.error(e)
+    //         }
+    //     }
+    // })
+
+    // ipcMain.handle("script:watchForChanges", (event, scriptDir, cb) => {
+    //     fs.watch(scriptDir, (event, filename)  => {
+    //         console.log(`Change found in ${filename}`, e)
+    //         if (filename) {
+    //             cb(event, filename)
+    //         } else {
+    //             console.warn("No file found")
+    //         }
+    //     })
+    // })
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

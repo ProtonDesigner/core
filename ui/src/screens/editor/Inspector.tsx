@@ -27,6 +27,8 @@ export default function Inspector(props: InspectorProps) {
         {Object.keys(properties).map(key => {
             const property = properties[key]
 
+            if (key == "x" || key == "y") return <></>
+            
             return <div className="input">
                 {capitalizeFirstLetter(key)}: <input
                     type="text"

@@ -1,0 +1,5 @@
+@use "./Editor";
+
+.text__editor {
+    margin-top: Editor.$tools-height;
+}
