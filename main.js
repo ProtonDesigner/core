@@ -20,7 +20,8 @@ function createWindow () {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true
-        }
+        },
+        logo: path.join(__dirname, 'assets', 'logo.png')
     })
 
     win.loadFile(path.join(__dirname, 'ui', 'index.html'))

@@ -84,8 +84,10 @@
     },
     "linux": {
       "target": [
-        "AppImage"
+        "AppImage",
+        "deb"
       ],
+      "icon": "ui/assets/logo.png",
       "category": "Graphics"
     }
   }
