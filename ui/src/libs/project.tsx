@@ -91,7 +91,8 @@ class Project {
 
         Object.keys(this.scripts).map(key => {
             const script: ProjectScript = this.scripts[key]
-            serializedScripts[script.uid] = script.serialize()
+            console.log(script)
+            serializedScripts[script.uid] = script?.serialize()
         })
 
         return {
@@ -109,7 +110,12 @@ class Project {
 
         this.name = name
         this.id = json.id
-        this.scripts = json.scripts
+        Object.keys(json.scripts).map(key => {
+            const script = json.scripts[key]
+            const newScript = new ProjectScript()
+            newScript.load(script)
+            this.addScript(newScript)
+        })
         Object.keys(elements).map(key => {
             const element = elements[key]
             const elementID: string = element.elementID
@@ -234,8 +240,8 @@ class ElementProperty {
 }
 
 class ProjectScript {
-    constructor(name: string, initialContents?: string) {
-        this.name = name
+    constructor(name?: string, initialContents?: string) {
+        this.name = name || "script.lua"
         this.contents = initialContents || ""
         this.uid = uuidV4()
     }

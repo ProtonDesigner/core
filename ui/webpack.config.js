@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin')
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin')
 
 var config = {
   entry: "./src/index.tsx",
@@ -64,7 +65,8 @@ var config = {
     minimize: true,
   },
   plugins: [
-    new NodePolyfillPlugin()
+    new NodePolyfillPlugin(),
+    new MonacoWebpackPlugin()
   ],
   resolve: {
     extensions: [".tsx", ".ts", ".js"]

@@ -2,14 +2,13 @@ import React, { useState, FC } from 'react';
 import { createRoot } from "react-dom/client";
 
 import Home from "./screens/home/Home"
-import Settings from "./screens/settings/Settings"
 import Editor from "./screens/editor/Editor"
 
 import "./main.scss"
 
 const pages = [
     Home,
-    Settings,
+    () => {return <></>},
     Editor
 ]
 

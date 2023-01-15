@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Project, ProjectScript } from "../../libs/internal";
 import './TextEditor.scss';
-import Editor from "@monaco-editor/react"
+import Editor, { loader } from "@monaco-editor/react"
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
+import * as monaco from "monaco-editor"
+loader.config({ monaco })
+
+import Tabs from 'react-responsive-tabs';
+import 'react-responsive-tabs/styles.css';
 
 interface TextEditorProps {
     project: Project
@@ -13,37 +16,53 @@ interface TextEditorProps {
 }
 
 export default function TextEditor(props: TextEditorProps) {
-    const scripts: {
+    const [scripts, setScripts] = useState<
+    {
         [key: string]: any
-    } = props.project.serialize().scripts
-    const [tabIndex, setTabIndex] = useState(0)
+    }
+    >(props.project.serialize().scripts)
+
+    function getTabs() {
+        let tabs: any = Object.keys(scripts).map((key, index: number) => {
+            const script: ProjectScript = scripts[key]
+            
+            return {
+                title: script.name,
+                getContent: () => <Editor
+                    height="100%"
+                    path={script.name}
+                    defaultLanguage="lua"
+                    defaultValue={script.contents}
+                    onChange={(value, e) => {
+                        console.log(value, e)
+                        props.project.updateScript(script.uid, value || script.contents)
+                        setScripts(props.project.serialize().scripts)
+                        // setScripts(newScripts)
+                    }}
+                />,
+                key: index,
+                panelClassName: "editor-panel"
+            }
+        })
+        tabs.push({
+            title: "Add Script",
+            getContent: () => <img src="" onError={() => {
+                // This is used to create the new tab when the imaage isn't loaded
+                // and eventually causes an error. This could be exploited for XSS or RCE
+                // But this is isolated from the rest of the app
+                // So I think it's fine
+
+                const newScript = new ProjectScript(`test-${Math.random()}.lua`)
+                props.project.addScript(newScript)
+                setScripts(props.project.serialize().scripts)
+                props.rerender(1)
+                console.log(props.project)
+            }} />
+        })
+        return tabs
+    }
 
     return <div className="text__editor">
-        <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
-            <TabList>
-                {scripts && Object.keys(scripts).map(key => {
-                    const script: ProjectScript = scripts[key]
-                    console.log(script)
-                    return <Tab>{script.uid}</Tab>
-                })}
-            </TabList>
-            {scripts && Object.keys(scripts).map(key => {
-                return <TabPanel>
-                    <Editor
-                        height="80vh"
-                        theme="vs-dark"
-                        path={scripts[key].name}
-                        defaultLanguage="lua"
-                        defaultValue={scripts[key].content}
-                    />
-                </TabPanel>
-            })}
-            </Tabs>
-        <button onClick={(e) => {
-            const newScript = new ProjectScript("test.lua")
-            props.project.addScript(newScript)
-            props.rerender(1)
-            console.log(props.project)
-        }}>Add Script</button>
+        <Tabs items={getTabs()} />
     </div>
 }

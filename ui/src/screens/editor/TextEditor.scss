@@ -1,5 +1,14 @@
 @use "./Editor";
 
+$tabs-height: 46.38px;
+
 .text__editor {
     margin-top: Editor.$tools-height;
+
+    .editor-panel {
+        margin: 0;
+        padding: 0;
+
+        height: calc(100vh - Editor.$tools-height - $tabs-height - 2px);
+    }
 }
