@@ -14,6 +14,11 @@ import ThemeLoader from "../../libs/theme";
 import * as path from "path"
 import TextEditor from "./TextEditor";
 
+import { LuaFactory } from "wasmoon"
+
+const factory = new LuaFactory()
+const lua = await factory.createEngine()
+
 interface EditorProps extends BaseComponentProps {}
 
 const themeLoader = new ThemeLoader();
@@ -31,7 +36,9 @@ function Editor<FC>(props: EditorProps) {
 
     const [project, setProject] = useState<Project>(new Project());
 
-    function log(message: string, type: string) {
+    const [isRunning, setIsRunning] = useState(false)
+
+    function consoleLog(message: any, type: string) {
         const newConsoleMessages = consoleMessages
         newConsoleMessages.push({
             message,
@@ -66,10 +73,46 @@ function Editor<FC>(props: EditorProps) {
         }
     }, [])
 
+
+    useEffect(() => {
+        const doStuff = async () => {
+            // Expose logging functions to lua
+            lua.global.set("infoToConsole", (msg: any) => consoleLog(msg, "info"))
+            lua.global.set("warnToConsole", (msg: any) => consoleLog(msg, "warn"))
+            lua.global.set("errToConsole", (msg: any) => consoleLog(msg, "error"))
+
+            // Expose elements to Lua
+            lua.global.set("getElement", (name: string) => {
+                const elements = project.elements
+                let element: any = null
+                Object.keys(elements).map(key => {
+                    const _element: ProjectElement = elements[key]
+                    if (!element) {
+                        if (_element.name == name) {
+                            element = _element.serialize()
+                        }
+                    }
+
+                    return element
+                })
+            })
+
+            // Get and execute the main function
+            await lua.doStringSync(project.getScript("main.lua"))
+            const mainFunction = lua.global.get("main")
+            const output = mainFunction()
+            // lua.global.close()
+            setIsRunning(false)
+        }
+        if (isRunning) doStuff()
+    }, [isRunning])
+
     return <div className={`${props.className} editor`}>
         <Tools
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            setRunning={setIsRunning}
+            running={isRunning}
         />
         {loaded ? (currentPage == 0 ? <>
             <Preview
@@ -77,6 +120,7 @@ function Editor<FC>(props: EditorProps) {
                 currentElementUID={currentElementUID}
                 type="desktop"
                 saveProject={saveProject}
+                consoleLog={consoleLog}
             />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
@@ -96,7 +140,7 @@ function Editor<FC>(props: EditorProps) {
                                 newElement.name = `${newElement.name}${amountOfNames}`
                                 addElement(newElement)
                                 setCurrentElementUID(newElement.uid)
-                                log(`added ${Element.name}`, "info")
+                                consoleLog(`added ${Element.name}`, "info")
                                 setElementDialog(false)
                             }}>Add</button>
                         </div>

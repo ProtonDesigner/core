@@ -10,6 +10,8 @@ export function getAsset(assetName: string) {
 interface ToolsProps {
     currentPage: number
     setCurrentPage: (newPage: number) => void
+    setRunning: (newState: boolean) => void
+    running: boolean
 }
 
 interface ToolButtonProps {
@@ -18,7 +20,9 @@ interface ToolButtonProps {
 }
 
 function ToolButton(props: ToolButtonProps) {
-    return <div className="toolButton" onClick={props.onClick}>
+    return <div className="toolButton"
+    
+    onClick={props.onClick}>
         {props.children}
     </div>
 }
@@ -30,6 +34,11 @@ export default function Tools(props: ToolsProps) {
         </ToolButton>
         <ToolButton onClick={() => props.setCurrentPage(1)}>
             <img src={getAsset("script.png")} />
+        </ToolButton>
+        <ToolButton onClick={() => {
+            props.setRunning(!props.running)
+        }}>
+            <img src={getAsset("run-app.png")} />
         </ToolButton>
     </div>
 }

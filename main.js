@@ -27,19 +27,19 @@ function createWindow () {
     win.loadFile(path.join(__dirname, 'ui', 'index.html'))
 
     if (!app.isPackaged) {
-        win.webContents.openDevTools()
+        win.webContents.openDevTools()   
     }
 }
 
 let tmpDir
 
 app.whenReady().then(() => {
-    if (!app.isPackaged) {
-        const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
-        installExtension(REACT_DEVELOPER_TOOLS)
-            .then((ex_name) => console.log(`Added "${ex_name}" Extension`))
-            .catch((err) => console.log("An error occured when attempting to install extensions:", err))
-    }
+    // if (!app.isPackaged) {
+    //     const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
+    //     installExtension(REACT_DEVELOPER_TOOLS)
+    //         .then((ex_name) => console.log(`Added "${ex_name}" Extension`))
+    //         .catch((err) => console.log("An error occured when attempting to install extensions:", err))
+    // }
 
     createWindow()
 

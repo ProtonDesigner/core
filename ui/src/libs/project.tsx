@@ -1,7 +1,7 @@
 import React from 'react';
 import { v4 as uuidV4 } from 'uuid';
 
-import { ELEMENT_LIST } from './internal';
+import { ELEMENT_LIST, newMainLuaFile } from './internal';
 
 interface Project {
     elements: {
@@ -42,10 +42,10 @@ interface ProjectScript {
 }
 
 class Project {
-    constructor() {
+    constructor(name?: string) {
         this.elements = {}
-        this.name = ""
-        this.id = ""
+        this.name = name || ""
+        this.id = uuidV4()
         this.scripts = {}
     }
 
@@ -71,6 +71,23 @@ class Project {
 
     getScripts() {
         return this.scripts
+    }
+
+    getScript(scriptName: string) {
+        const scripts = this.getScripts()
+
+        let scriptContents: string = "";
+
+        Object.keys(scripts).map(key => {
+            const script: ProjectScript = scripts[key]
+            if (!scriptContents) {
+                if (scriptName == script.name) {
+                    scriptContents = script.contents
+                }
+            }
+        })
+
+        return scriptContents
     }
 
     serialize() {
@@ -110,12 +127,20 @@ class Project {
 
         this.name = name
         this.id = json.id
+        let mainExists = false
         Object.keys(json.scripts).map(key => {
             const script = json.scripts[key]
+            if (script.name == "main.lua") {
+                mainExists = true
+            }
             const newScript = new ProjectScript()
             newScript.load(script)
             this.addScript(newScript)
         })
+
+        if (!mainExists) {
+            this.addScript(newMainLuaFile())
+        }
         Object.keys(elements).map(key => {
             const element = elements[key]
             const elementID: string = element.elementID

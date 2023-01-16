@@ -37,12 +37,17 @@ export default function TextEditor(props: TextEditorProps) {
                         console.log(value, e)
                         props.project.updateScript(script.uid, value || script.contents)
                         setScripts(props.project.serialize().scripts)
-                        // setScripts(newScripts)
+                        props.saveProject()
                     }}
                 />,
                 key: index,
                 panelClassName: "editor-panel"
             }
+        })
+        tabs.unshift({
+            title: "Welcome",
+            getContent: () => <>Welcome to the Proton Text Editor, built upon the Monaco editor (the same editor used in VSCode)</>,
+            key: Math.random() + Math.random()
         })
         tabs.push({
             title: "Add Script",
@@ -57,6 +62,13 @@ export default function TextEditor(props: TextEditorProps) {
                 setScripts(props.project.serialize().scripts)
                 props.rerender(1)
                 console.log(props.project)
+                props.saveProject()
+            }} />
+        })
+        tabs.push({
+            title: "Delete Current Tab",
+            getContent: () => <img src="" onError={() => {
+                console.log("TODO: get current index; delete tab with index; rerendera")
             }} />
         })
         return tabs

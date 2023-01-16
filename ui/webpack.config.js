@@ -9,6 +9,12 @@ var config = {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
   },
+  // devServer: {
+  //   port: 9000,
+  //   static: {
+  //     directory: path.join(__dirname)
+  //   }
+  // },
   module: {
     rules: [
       {
@@ -69,7 +75,16 @@ var config = {
     new MonacoWebpackPlugin()
   ],
   resolve: {
-    extensions: [".tsx", ".ts", ".js"]
+    extensions: [".tsx", ".ts", ".js"],
+    fallback: {
+        fs: false,
+        child_process: false,
+        crypto: false,
+        url: false,
+    },
+  },
+  experiments: {
+    topLevelAwait: true
   }
 };
 

@@ -1,12 +1,13 @@
 import React, { useRef, RefObject, useEffect } from "react";
-import { ProjectElement } from "../../libs/internal";
+import { ProjectElement, Project } from "../../libs/internal";
 import { useDraggable, DragOptions } from "@neodrag/react";
 
 interface PreviewProps {
-    project: any
+    project: Project
     currentElementUID: any
     type: string
     saveProject: () => any
+    consoleLog: (message: string, type: string) => any
 }
 
 interface ContainerProps {

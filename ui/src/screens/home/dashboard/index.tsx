@@ -2,6 +2,7 @@ import React, { useEffect, useState, FC } from 'react';
 import "./dashboard.scss"
 
 import PocketBase from "pocketbase"
+import { Project, ProjectScript, newMainLuaFile } from '../../../libs/internal';
 
 interface DashboardProps {
     pb: PocketBase
@@ -42,11 +43,15 @@ export default function Dashboard<FC>(props: DashboardProps) {
     }, [])
 
     const createProject = async () => {
-        const data = {
-            name: projectName,
-            user: props.currentUser.id,
-            elements: {}
-        }
+        // const data = {
+        //     name: projectName,
+        //     user: props.currentUser.id,
+        //     elements: {}
+        // }
+        const project = new Project(projectName)
+        project.addScript(newMainLuaFile())
+        let data: any = project.serialize()
+        data["user"] = props.currentUser.id
         try {
             const createdProject = await props.pb.collection("projects").create(data)
         } catch (e) {
