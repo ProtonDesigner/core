@@ -19,13 +19,14 @@ class PluginManager {
         if (options?.path) {
             this.PLUGIN_PATH = options.path
         }
-        let pluginList: Array<string> = []
+
         window.electronAPI.getPlugins(this.PLUGIN_PATH).then((data: Array<string>) => {
             this.load(data)
         })
     }
 
     load(pluginFiles: Array<string>) {
+        window.electronAPI.logInfo("Loading plugins...")
         pluginFiles.map(filename => {
             // console.log("a", filename)
             try {
@@ -37,12 +38,16 @@ class PluginManager {
                 Object.assign(newPlugin, plugin)
                 // console.log(newPlugin, plugin)
                 this.PLUGINS[filename] = {plugin: newPlugin, pluginConfig}
+                window.electronAPI.logInfo(`Loaded Plugin ${filename}`)
             } catch (err) {
-                console.error(`Error occurred while loading plugin ${filename}`)
+                const errMsg = `Error occurred while loading plugin ${filename}`
+                console.error(errMsg)
+                window.electronAPI.logErr(errMsg)
                 console.error(err)
             }
         })
 
+        window.electronAPI.logInfo("Plugins loaded")
         console.log("Plugins finished loading")
     }
 

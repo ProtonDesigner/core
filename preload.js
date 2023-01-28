@@ -21,7 +21,10 @@ contextBridge.exposeInMainWorld("electronAPI", {
 
         const pluginConfig = require(path.join(pluginPath, pluginName, "proton.config.js"))
         return {plugin: newPlugin, pluginConfig: pluginConfig}
-    }
+    },
+    logInfo: (message) => ipcRenderer.send("log", "info", message),
+    logWarn: (message) => ipcRenderer.send("log", "warn", message),
+    logErr: (message) => ipcRenderer.send("log", "error", message),
     // This could be used for local scripts
     // createTempDir: (name, cb) => ipcRenderer.invoke("file:createTempScriptDir", name, cb),
     // watchForChanges: (scriptDir, cb) => ipcRenderer.invoke("script:watchForChanges", scriptDir, cb)

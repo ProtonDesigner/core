@@ -7,6 +7,15 @@ const { tmpdir } = require('os');
 
 const fs = require('fs');
 
+const date = new Date()
+const LOGGING_FILE_NAME = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}.log`
+const LOGGING_DIR = app.isPackaged ? 
+                            path.join(app.getPath("userData"), "logs") :
+                            path.join("logs")
+const LOGGING_FILE_PATH = path.join(LOGGING_DIR, LOGGING_FILE_NAME)
+
+const loggingStream = fs.createWriteStream(LOGGING_FILE_PATH)
+
 app.on("ready", () => {
 	autoUpdater.checkForUpdatesAndNotify();
 });
@@ -56,6 +65,10 @@ app.whenReady().then(() => {
             return result
         }
         return getSettings()
+    })
+
+    ipcMain.on("log", (event, level, message) => {
+        loggingStream.write(`[${level.toUpperCase()}] ${message}` + "\n")
     })
 
     // When working with local scripts, use these functions
