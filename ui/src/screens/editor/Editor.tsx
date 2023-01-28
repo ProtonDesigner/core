@@ -16,6 +16,9 @@ import TextEditor from "./TextEditor";
 
 import { LuaFactory } from "wasmoon"
 
+import { EditorLogic } from "../../libs/logic";
+import PluginManager from "../../libs/plugin";
+
 const factory = new LuaFactory()
 const lua = await factory.createEngine()
 
@@ -23,6 +26,8 @@ interface EditorProps extends BaseComponentProps {}
 
 const themeLoader = new ThemeLoader();
 console.log(themeLoader.getTheme("example.js"))
+
+const pluginManager = new PluginManager()
 
 function Editor<FC>(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)
@@ -38,6 +43,12 @@ function Editor<FC>(props: EditorProps) {
 
     const [isRunning, setIsRunning] = useState(false)
 
+    const logic = new EditorLogic(pluginManager, project)
+
+    useEffect(() => {
+        logic.project = project
+    }, [project])
+
     function consoleLog(message: any, type: string) {
         const newConsoleMessages = consoleMessages
         newConsoleMessages.push({
@@ -48,25 +59,20 @@ function Editor<FC>(props: EditorProps) {
     }
 
     function saveProject() {
-        const serializedProject = project?.serialize()
-        pb.collection('projects').update(project.id, serializedProject, {
-            "$autoCancel": false
-        })
+        return logic.invoke("saveProject")
     }
 
     function addElement(element: ProjectElement) {
-        project?.addElement(element)
-        saveProject()
+        return logic.invoke("addElement", {element})
     }
 
     useEffect(() => {
         async function getData() {
-            const project_result = await pb.collection("projects").getOne(props.state.projectId)
             const newProject = new Project()
-            newProject.load(project_result)
+            newProject.load(props.state.project)
             setProject(newProject)
-            console.log(newProject)
             setLoaded(true)
+            pluginManager.setProject(newProject)
         }
         if (!loaded) {
             getData()
@@ -92,9 +98,8 @@ function Editor<FC>(props: EditorProps) {
                             element = _element.serialize()
                         }
                     }
-
-                    return element
                 })
+                return element
             })
 
             // Get and execute the main function

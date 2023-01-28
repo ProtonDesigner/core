@@ -9,6 +9,8 @@ loader.config({ monaco })
 import Tabs from 'react-responsive-tabs';
 import 'react-responsive-tabs/styles.css';
 
+import TextEditorFileList from "./TextEditorFileList";
+
 interface TextEditorProps {
     project: Project
     rerender: any
@@ -22,8 +24,14 @@ export default function TextEditor(props: TextEditorProps) {
     }
     >(props.project.serialize().scripts)
 
+    const [selectedTab, setSelectedTab] = useState(0)
+
+    const [tabs, setTabs] = useState<{
+        [key: string]: any
+    }>({})
+
     function getTabs() {
-        let tabs: any = Object.keys(scripts).map((key, index: number) => {
+        let _tabs: any = Object.keys(tabs).map((key, index: number) => {
             const script: ProjectScript = scripts[key]
             
             return {
@@ -44,12 +52,12 @@ export default function TextEditor(props: TextEditorProps) {
                 panelClassName: "editor-panel"
             }
         })
-        tabs.unshift({
+        _tabs.unshift({
             title: "Welcome",
             getContent: () => <>Welcome to the Proton Text Editor, built upon the Monaco editor (the same editor used in VSCode)</>,
             key: Math.random() + Math.random()
         })
-        tabs.push({
+        _tabs.push({
             title: "Add Script",
             getContent: () => <img src="" onError={() => {
                 // This is used to create the new tab when the imaage isn't loaded
@@ -65,16 +73,22 @@ export default function TextEditor(props: TextEditorProps) {
                 props.saveProject()
             }} />
         })
-        tabs.push({
+        _tabs.push({
             title: "Delete Current Tab",
             getContent: () => <img src="" onError={() => {
                 console.log("TODO: get current index; delete tab with index; rerendera")
             }} />
         })
-        return tabs
+        return _tabs
     }
 
     return <div className="text__editor">
-        <Tabs items={getTabs()} />
+        <TextEditorFileList tabs={tabs} setTabs={setTabs} scripts={scripts} setSelectedTab={setSelectedTab} />
+        <div className="tab__container">
+            <Tabs items={getTabs()} selectedTabKey={selectedTab  + 1} onChange={(e: any) => {
+                console.log(e)
+                setSelectedTab(e)
+            }} />
+        </div>
     </div>
 }

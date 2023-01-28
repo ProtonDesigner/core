@@ -1,14 +1,28 @@
 @use "./Editor";
 
-$tabs-height: 46.38px;
+$tabs-height: 46.38px; // Don't ask why this is so specific
+$file-list-width: 250px;
 
 .text__editor {
     margin-top: Editor.$tools-height;
 
-    .editor-panel {
-        margin: 0;
-        padding: 0;
+    .tab__container {
+        .editor-panel {
+            margin: 0;
+            padding: 0;
 
-        height: calc(100vh - Editor.$tools-height - $tabs-height - 2px);
+            height: calc(100vh - Editor.$tools-height - $tabs-height - 2px);
+        }     
+    
+        margin-left: $file-list-width;
+        width: calc(100vw - $file-list-width);
+    }
+
+    .editor__list {
+        position: absolute;
+        width: $file-list-width;
+        background-color: grey;
+
+        height: calc(100vh - Editor.$tools-height);
     }
 }

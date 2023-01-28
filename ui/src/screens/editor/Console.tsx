@@ -18,7 +18,7 @@ function ConsoleMessage(props: ConsoleMessageProps) {
         compRef.current?.scrollIntoView()
     })
 
-    return <div className={`console__message ${props.type}`} ref={compRef}>
+    return <div key={Math.random()} className={`console__message ${props.type}`} ref={compRef}>
         {props.message}
     </div>
 }

@@ -19,16 +19,17 @@ function createWindow () {
         height: 600,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
-            contextIsolation: true
+            contextIsolation: true,
+            sandbox: false
         },
         logo: path.join(__dirname, 'assets', 'logo.png')
     })
 
     win.loadFile(path.join(__dirname, 'ui', 'index.html'))
 
-    if (!app.isPackaged) {
-        win.webContents.openDevTools()   
-    }
+    // if (!app.isPackaged) {
+    //     win.webContents.openDevTools()   
+    // }
 }
 
 let tmpDir
@@ -85,6 +86,16 @@ app.whenReady().then(() => {
     //         }
     //     })
     // })
+
+    ipcMain.handle("getPlugins", (event, pluginDir) => {
+        return fs.readdirSync(pluginDir)
+    })
+
+    ipcMain.handle("getPlugin", (event, pluginDir, pluginName) => {
+        const plugin = require(path.join(pluginDir, pluginName))
+        const pluginConfig = require(path.join(pluginDir, pluginName, "proton.config.js"))
+        return JSON.stringify({plugin: plugin, pluginConfig: pluginConfig})
+    })
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {

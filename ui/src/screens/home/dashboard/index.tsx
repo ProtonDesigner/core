@@ -33,11 +33,18 @@ export default function Dashboard<FC>(props: DashboardProps) {
     useEffect(() => {
         if (!props.currentUser) return () => {};
         async function getData() {
-            const resultList = await props.pb.collection("projects").getFullList(100, {
-                filter: `user = "${props.currentUser.id}"`
-            })
-            // console.log(resultList)
-            setProjects(resultList)
+            try {
+                const resultList = await props.pb.collection("projects").getFullList(100, {
+                    filter: `user = "${props.currentUser.id}"`
+                })
+                // console.log(resultList)
+                setProjects(resultList)
+            } catch (e) {
+                console.log(e)
+                setProjects([
+                    {}
+                ]);
+            }
         }
         getData()
     }, [])
@@ -78,7 +85,7 @@ export default function Dashboard<FC>(props: DashboardProps) {
                         return <ProjectCard projectName={project.name} onOpen={(e) => {
                             props.setState({
                                 ...props.state,
-                                projectId: project.id
+                                project: project
                             })
                             props.setCurrentPage(2)
                         }} key={Math.random()} />
