@@ -41,8 +41,10 @@ function EditorFile<FC>(props: {
         } else {
             const newTabs = {...props.tabs}
             newTabs[script.uid] = script
+            console.log("be state")
             props.setTabs(newTabs)
             props.setSelectedTab(props.tabs.length - 1)
+            console.log("af state")
         }
     }}>
         {props.script.name}

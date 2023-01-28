@@ -42,7 +42,7 @@ export default function TextEditor(props: TextEditorProps) {
                     defaultLanguage="lua"
                     defaultValue={script.contents}
                     onChange={(value, e) => {
-                        console.log(value, e)
+                        // console.log(value, e)
                         props.project.updateScript(script.uid, value || script.contents)
                         setScripts(props.project.serialize().scripts)
                         props.saveProject()
@@ -69,7 +69,7 @@ export default function TextEditor(props: TextEditorProps) {
                 props.project.addScript(newScript)
                 setScripts(props.project.serialize().scripts)
                 props.rerender(1)
-                console.log(props.project)
+                // console.log(props.project)
                 props.saveProject()
             }} />
         })
@@ -86,7 +86,7 @@ export default function TextEditor(props: TextEditorProps) {
         <TextEditorFileList tabs={tabs} setTabs={setTabs} scripts={scripts} setSelectedTab={setSelectedTab} />
         <div className="tab__container">
             <Tabs items={getTabs()} selectedTabKey={selectedTab  + 1} onChange={(e: any) => {
-                console.log(e)
+                // console.log(e)
                 setSelectedTab(e)
             }} />
         </div>

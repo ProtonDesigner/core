@@ -20,7 +20,7 @@ interface ContainerProps {
 function ComponentContainer(props: ContainerProps) {
     const nodeRef = useRef(null) as RefObject<HTMLDivElement>
 
-    console.log(props.element.properties.getProp("x"))
+    // console.log(props.element.properties.getProp("x"))
 
     const options: DragOptions = {
         bounds: ".preview",
@@ -33,7 +33,7 @@ function ComponentContainer(props: ContainerProps) {
     const { isDragging, dragState } = useDraggable(nodeRef, options)
 
     useEffect(() => {
-        console.log(isDragging, dragState)
+        // console.log(isDragging, dragState)
 
         const offsetX = dragState?.offsetX
         const offsetY = dragState?.offsetY
@@ -48,7 +48,7 @@ function ComponentContainer(props: ContainerProps) {
 }
 
 export default function Preview(props: PreviewProps) {
-    console.log(props.project)
+    // console.log(props.project)
 
     const previewRef = useRef() as RefObject<HTMLDivElement>
 

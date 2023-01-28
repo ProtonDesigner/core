@@ -25,7 +25,7 @@ const lua = await factory.createEngine()
 interface EditorProps extends BaseComponentProps {}
 
 const themeLoader = new ThemeLoader();
-console.log(themeLoader.getTheme("example.js"))
+// console.log(themeLoader.getTheme("example.js"))
 
 const pluginManager = new PluginManager()
 

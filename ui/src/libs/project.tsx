@@ -108,7 +108,7 @@ class Project {
 
         Object.keys(this.scripts).map(key => {
             const script: ProjectScript = this.scripts[key]
-            console.log(script)
+            // console.log(script)
             serializedScripts[script.uid] = script?.serialize()
         })
 

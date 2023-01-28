@@ -27,15 +27,15 @@ class PluginManager {
 
     load(pluginFiles: Array<string>) {
         pluginFiles.map(filename => {
-            console.log("a", filename)
+            // console.log("a", filename)
             try {
                 const pluginObj = window.electronAPI.getPlugin(this.PLUGIN_PATH, filename)
                 const plugin = pluginObj.plugin
                 const pluginConfig = pluginObj.pluginConfig
-                console.log(plugin, "\n", pluginConfig)
+                // console.log(plugin, "\n", pluginConfig)
                 const newPlugin = new ProtonPlugin(new Project())
                 Object.assign(newPlugin, plugin)
-                console.log(newPlugin, plugin)
+                // console.log(newPlugin, plugin)
                 this.PLUGINS[filename] = {plugin: newPlugin, pluginConfig}
             } catch (err) {
                 console.error(`Error occurred while loading plugin ${filename}`)
@@ -47,7 +47,7 @@ class PluginManager {
     }
 
     setProject(project: Project) {
-        console.log(this.PLUGINS)
+        // console.log(this.PLUGINS)
         Object.keys(this.PLUGINS).map((key: any) => {
             this.PLUGINS[key].plugin.project = project
         })
@@ -61,15 +61,15 @@ class PluginManager {
         Object.keys(this.PLUGINS).map(key => {
             const plugin = this.PLUGINS[key].plugin
             const func = plugin[`${namespace}_${command}`]
-            console.log(func)
-            console.log(`${namespace}_${command}`)
+            // console.log(func)
+            // console.log(`${namespace}_${command}`)
             let result;
             if (func) {
-                console.log("executing!")
+                // console.log("executing!")
                 let _args: any = args ? args : {}
-                console.log(plugin)
+                // console.log(plugin)
                 result = func(_args)
-                console.log(result)
+                // console.log(result)
             }
             results[key] = result
         })

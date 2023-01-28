@@ -53,7 +53,7 @@ class EditorLogic extends Logic {
     }
 
     saveProject() {
-        console.log(this)
+        // console.log(this)
         const { project } = this
 
         const serializedProject = project.serialize()
