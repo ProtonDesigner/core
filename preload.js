@@ -12,16 +12,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
         const newPlugin = new ProtonPlugin(undefined)
 
         const pluginObj = new plugin()
-
-        // Manually adds all the methods
-        // TODO: iterate over all methods and apply them
-        newPlugin.editor_addElement = pluginObj.editor_addElement
-        newPlugin.editor_deleteElement = pluginObj.editor_deleteElement
-        newPlugin.editor_saveProject = pluginObj.editor_saveProject
-
+        
         Object.getOwnPropertyNames(
-            Object.getPrototypeOf( newPlugin )
-        ).map
+            Object.getPrototypeOf(newPlugin)
+        ).map(name => {
+            newPlugin[name] = pluginObj[name]
+        })
 
         const pluginConfig = require(path.join(pluginPath, pluginName, "proton.config.js"))
         return {plugin: newPlugin, pluginConfig: pluginConfig}
