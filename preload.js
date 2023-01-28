@@ -8,11 +8,11 @@ contextBridge.exposeInMainWorld("electronAPI", {
     getPlugins: (pluginPath) => ipcRenderer.invoke("getPlugins", pluginPath),
     getPlugin: (pluginPath, pluginName) => {
         const plugin = require(path.join(pluginPath, pluginName))
-        console.log(plugin)
+        // console.log(plugin)
         const newPlugin = new ProtonPlugin(undefined)
 
         const pluginObj = new plugin()
-        
+
         Object.getOwnPropertyNames(
             Object.getPrototypeOf(newPlugin)
         ).map(name => {
