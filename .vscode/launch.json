@@ -1,18 +1,27 @@
 {
-    "version": "0.2.0",
-    "trace": true,
-    "configurations": [
-      {
-        "name": "Debug Main Process",
-        "type": "node",
-        "request": "launch",
-        "cwd": "${workspaceFolder}",
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-        "windows": {
-          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-        },
-        "args" : ["."],
-        "outputCapture": "std"
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug Main Process",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
+      "program": "${workspaceRoot}/index.js",
+      "runtimeArgs": [
+        ".",
+        // this args for attaching render process
+        "--remote-debugging-port=9222"
+      ],
+      "windows": {
+        "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       }
-    ]
-  }
+    },
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Render Process",
+      "port": 9222,
+      "webRoot": "${workspaceRoot}/ui"
+    }
+  ]
+}
