@@ -14,6 +14,8 @@ const LOGGING_DIR = app.isPackaged ?
                             path.join("logs")
 const LOGGING_FILE_PATH = path.join(LOGGING_DIR, LOGGING_FILE_NAME)
 
+if (!fs.existsSync(LOGGING_DIR)) fs.mkdirSync(LOGGING_DIR)
+
 const loggingStream = fs.createWriteStream(LOGGING_FILE_PATH)
 
 app.on("ready", () => {
