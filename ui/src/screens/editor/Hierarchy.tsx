@@ -13,6 +13,7 @@ interface HierarchyItemProps {
     icon: JSX.Element
     onClick?: (e: any) => void
     active: boolean
+    key: any
 }
 
 function HierarchyItem(props: HierarchyItemProps) {
@@ -28,6 +29,7 @@ export default function Hierarchy(props: HierarchyProps) {
         {props.project.elements && Object.keys(props.project.elements).map(key => {
             let element = props.project.elements[key];
             return <HierarchyItem
+                key={key}
                 name={element.name}
                 active={element.uid === props.currentElementUID}
                 icon={<img src={getAsset(".", "element.png")} />}

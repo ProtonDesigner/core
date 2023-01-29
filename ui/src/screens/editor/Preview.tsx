@@ -15,6 +15,7 @@ interface ContainerProps {
     children: any
     parent: RefObject<HTMLDivElement>
     saveProject: () => any
+    key: any
 }
 
 function ComponentContainer(props: ContainerProps) {
@@ -60,6 +61,7 @@ export default function Preview(props: PreviewProps) {
                 element={element}
                 parent={previewRef}
                 saveProject={props.saveProject}
+                key={element_index}
             >
                 <Component />
             </ComponentContainer>

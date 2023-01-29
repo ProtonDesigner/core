@@ -1,0 +1,31 @@
+$item-active: darkgrey;
+$tools-height: 50px;
+
+$item-padding: 5px;
+
+$bar-height: 35px;
+
+.tabs {
+    .bar {
+        display: flex;
+        gap: 10px;
+        height: $bar-height;
+        background-color: hsl(0, 0%, 23%);
+
+        .item {
+            padding: $item-padding;
+
+            background-color: lightgrey;
+            border: black 1px solid;
+            border-bottom: none;
+
+            &.active {
+                background-color: $item-active;
+            }
+        }
+    }
+    .content {
+        background-color: $item-active;
+        height: calc(100vh - $bar-height - $tools-height);
+    }
+}

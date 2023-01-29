@@ -131,7 +131,7 @@ function Editor<FC>(props: EditorProps) {
                 <div className="element__list">
                     {Object.keys(ELEMENT_LIST).map(element_id => {
                         let Element = ELEMENT_LIST[element_id]
-                        return <div className="elements__item">
+                        return <div className="elements__item" key={element_id}>
                             <h4>{Element.name}</h4>
                             <button onClick={() => {
                                 const newElement = new Element()
@@ -167,7 +167,10 @@ function Editor<FC>(props: EditorProps) {
                 setCurrentElement={setCurrentElementUID}
             />
             <Console messages={consoleMessages} setMessages={setConsoleMessages} currentElementUID={currentElementUID} />
-        </> : <TextEditor project={project} rerender={forceRerender} saveProject={saveProject} />) : "Loading..."}
+        </> : <TextEditor
+            project={project}
+            rerender={forceRerender}
+            saveProject={saveProject} />) : "Loading..."}
     </div>
 }
 

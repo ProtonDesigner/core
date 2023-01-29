@@ -9,6 +9,7 @@ var config = {
     path: path.resolve(__dirname, "./dist"),
     filename: "[name].js",
   },
+  devtool: "source-map",
   // devServer: {
   //   port: 9000,
   //   static: {

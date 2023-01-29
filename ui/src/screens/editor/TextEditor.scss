@@ -21,8 +21,36 @@ $file-list-width: 250px;
     .editor__list {
         position: absolute;
         width: $file-list-width;
-        background-color: grey;
+        background-color: hsl(0, 0%, 34%);
 
         height: calc(100vh - Editor.$tools-height);
+        
+        .file {
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+            cursor: pointer;
+
+            img {
+                width: 22px;
+                height: 22px;
+                display: none;
+            }
+            &:hover {
+                background-color: darkgrey;
+            
+                img {
+                    display: block;
+                }
+            }
+        }
+    }
+
+    .new__file {
+        input, button {
+            outline: 0;
+            border: 0;
+            padding: 5px;
+        }
     }
 }
