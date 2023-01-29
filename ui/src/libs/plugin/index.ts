@@ -20,7 +20,7 @@ class PluginManager {
             this.PLUGIN_PATH = options.path
         }
 
-        window.electronAPI.getPlugins(this.PLUGIN_PATH).then((data: Array<string>) => {
+        window.electronAPI.getPlugins().then((data: Array<string>) => {
             this.load(data)
         })
     }
@@ -30,7 +30,7 @@ class PluginManager {
         pluginFiles.map(filename => {
             // console.log("a", filename)
             try {
-                const pluginObj = window.electronAPI.getPlugin(this.PLUGIN_PATH, filename)
+                const pluginObj = window.electronAPI.getPlugin(filename)
                 const plugin = pluginObj.plugin
                 const pluginConfig = pluginObj.pluginConfig
                 // console.log(plugin, "\n", pluginConfig)

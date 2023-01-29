@@ -1,7 +1,7 @@
 export interface IElectronAPI {
     getSettings: () => {},
-    getPlugins: (pluginPath: string) => Promise,
-    getPlugin: (pluginPath: string, pluginName: string) => any,
+    getPlugins: () => Promise,
+    getPlugin: (pluginName: string) => any,
     logInfo: (message: string) => void,
     logWarn: (message: string) => void,
     logErr: (message: string) => void,

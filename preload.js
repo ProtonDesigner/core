@@ -2,12 +2,19 @@ const { default: ProtonPlugin } = require("@techstudent10/plugin")
 const { contextBridge, ipcRenderer } = require("electron")
 
 const path = require("path")
+let PLUGIN_PATH;
+
+ipcRenderer.invoke("getDev").then(isDev => {
+    ipcRenderer.invoke("getUserDir").then(userDir => {
+        PLUGIN_PATH = isDev ? path.join(userDir, "plugins") : path.join(__dirname, "ui", "src", "plugins")
+    })
+})
 
 contextBridge.exposeInMainWorld("electronAPI", {
     getSettings: () => ipcRenderer.invoke("settings:get"),
-    getPlugins: (pluginPath) => ipcRenderer.invoke("getPlugins", pluginPath),
-    getPlugin: (pluginPath, pluginName) => {
-        const plugin = require(path.join(pluginPath, pluginName))
+    getPlugins: () => ipcRenderer.invoke("getPlugins"),
+    getPlugin: (pluginName) => {
+        const plugin = require(path.join(PLUGIN_PATH, pluginName))
         // console.log(plugin)
         const newPlugin = new ProtonPlugin(undefined)
 
@@ -19,7 +26,7 @@ contextBridge.exposeInMainWorld("electronAPI", {
             newPlugin[name] = pluginObj[name]
         })
 
-        const pluginConfig = require(path.join(pluginPath, pluginName, "proton.config.js"))
+        const pluginConfig = require(path.join(PLUGIN_PATH, pluginName, "proton.config.js"))
         return {plugin: newPlugin, pluginConfig: pluginConfig}
     },
     logInfo: (message) => ipcRenderer.send("log", "info", message),

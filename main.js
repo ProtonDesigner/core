@@ -14,6 +14,8 @@ const LOGGING_DIR = app.isPackaged ?
                             path.join("logs")
 const LOGGING_FILE_PATH = path.join(LOGGING_DIR, LOGGING_FILE_NAME)
 
+const PLUGIN_PATH = app.isPackaged ? path.join(app.getPath("userData"), "plugins") : path.join(__dirname, "ui", "src", "plugins")
+
 if (!fs.existsSync(LOGGING_DIR)) fs.mkdirSync(LOGGING_DIR)
 
 const loggingStream = fs.createWriteStream(LOGGING_FILE_PATH)
@@ -31,28 +33,18 @@ function createWindow () {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
-            sandbox: false
+            sandbox: false,
+            nodeIntegration: true
         },
         logo: path.join(__dirname, 'assets', 'logo.png')
     })
 
     win.loadFile(path.join(__dirname, 'ui', 'index.html'))
-
-    // if (!app.isPackaged) {
-    //     win.webContents.openDevTools()   
-    // }
 }
 
 let tmpDir
 
 app.whenReady().then(() => {
-    // if (!app.isPackaged) {
-    //     const { default: installExtension, REACT_DEVELOPER_TOOLS } = require("electron-devtools-installer")
-    //     installExtension(REACT_DEVELOPER_TOOLS)
-    //         .then((ex_name) => console.log(`Added "${ex_name}" Extension`))
-    //         .catch((err) => console.log("An error occured when attempting to install extensions:", err))
-    // }
-
     createWindow()
 
     ipcMain.handle("settings:get", (event) => {
@@ -73,42 +65,23 @@ app.whenReady().then(() => {
         loggingStream.write(`[${level.toUpperCase()}] ${message}` + "\n")
     })
 
-    // When working with local scripts, use these functions
-    // ipcMain.handle("file:createTempScriptDir", (event, name, cb) => {
-    //     try {
-    //         tmpDir = fs.mkdtemp(path.join(tmpdir(), "proton", name))
-    //         cb(tmpDir)
-    //     } catch (e) {
-    //         console.error(e)
-    //     } finally {
-    //         try {
-    //             if (tmpDir) {
-    //                 fs.rm(tmpDir, { recursive: true })
-    //             } 
-    //         } catch (e) {
-    //             console.error(e)
-    //         }
-    //     }
-    // })
-
-    // ipcMain.handle("script:watchForChanges", (event, scriptDir, cb) => {
-    //     fs.watch(scriptDir, (event, filename)  => {
-    //         console.log(`Change found in ${filename}`, e)
-    //         if (filename) {
-    //             cb(event, filename)
-    //         } else {
-    //             console.warn("No file found")
-    //         }
-    //     })
-    // })
-
-    ipcMain.handle("getPlugins", (event, pluginDir) => {
-        return fs.readdirSync(pluginDir)
+    ipcMain.handle("getDev", (event) => {
+        return app.isPackaged
     })
 
-    ipcMain.handle("getPlugin", (event, pluginDir, pluginName) => {
-        const plugin = require(path.join(pluginDir, pluginName))
-        const pluginConfig = require(path.join(pluginDir, pluginName, "proton.config.js"))
+    ipcMain.handle("getUserDir", (event) => {
+        return app.getPath("userData")
+    })
+
+    ipcMain.handle("getPlugins", (event) => {
+        let result = fs.readdirSync(PLUGIN_PATH)
+        console.log(result)
+        return result
+    })
+
+    ipcMain.handle("getPlugin", (event, pluginName) => {
+        const plugin = require(path.join(PLUGIN_PATH, pluginName))
+        const pluginConfig = require(path.join(PLUGIN_PATH, pluginName, "proton.config.js"))
         return JSON.stringify({plugin: plugin, pluginConfig: pluginConfig})
     })
 

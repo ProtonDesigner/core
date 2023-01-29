@@ -23,5 +23,11 @@
       "port": 9222,
       "webRoot": "${workspaceRoot}/ui"
     }
+  ],
+  "compounds": [
+    {
+      "name": "Debug Main and Renderer",
+      "configurations": ["Debug Main Process", "Attach to Render Process"]
+    }
   ]
 }

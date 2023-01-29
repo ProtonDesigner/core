@@ -7,7 +7,6 @@ import * as monaco from "monaco-editor"
 loader.config({ monaco })
 
 import Tabs, { Tab } from './Tabs';
-import 'react-responsive-tabs/styles.css';
 
 import TextEditorFileList from "./TextEditorFileList";
 
