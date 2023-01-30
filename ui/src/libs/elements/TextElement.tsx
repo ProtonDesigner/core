@@ -1,8 +1,6 @@
 import React from "react";
 import { ElementProperty, ProjectElement } from "../internal"
 
-// interface TextElement extends BaseElementType {}
-
 class TextElement extends ProjectElement {
     initialize() {
         this.name = "Text"

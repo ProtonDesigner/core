@@ -102,12 +102,43 @@ function Editor<FC>(props: EditorProps) {
                 return element
             })
 
+            Object.keys(project.elements).map(key => {
+                const doStuff = async () => {
+                    const element = project.elements[key]
+                    try {
+                        await element.onRun()
+                    } catch (err: any) {
+                        consoleLog(`An exception occurred in ${element.name} while attempting to start:`, "error")
+                        err.split("\n").map((line: string) => {
+                            consoleLog(line, "error")
+                        })
+                    }
+                }
+                doStuff()
+            })
+
             // Get and execute the main function
             await lua.doStringSync(project.getScript("main.lua"))
             const mainFunction = lua.global.get("main")
             const output = mainFunction()
+
             // lua.global.close()
             setIsRunning(false)
+
+            Object.keys(project.elements).map(key => {
+                const doStuff = async () => {
+                    const element = project.elements[key]
+                    try {
+                        await element.onStop()
+                    } catch (err: any) {
+                        consoleLog(`An exception occurred in ${element.name} while stopping:`, "error")
+                        err.split("\n").map((line: string) => {
+                            consoleLog(line, "error")
+                        })
+                    }
+                }
+                doStuff()
+            })
         }
         if (isRunning) doStuff()
     }, [isRunning])
@@ -130,11 +161,11 @@ function Editor<FC>(props: EditorProps) {
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
                     {Object.keys(ELEMENT_LIST).map(element_id => {
-                        let Element = ELEMENT_LIST[element_id]
+                        let Element: ProjectElement = new ELEMENT_LIST[element_id]
                         return <div className="elements__item" key={element_id}>
                             <h4>{Element.name}</h4>
                             <button onClick={() => {
-                                const newElement = new Element()
+                                const newElement = Element
                                 let amountOfNames = 0
                                 Object.keys(project.elements).map(key => {
                                     const element: ProjectElement = project.elements[key]

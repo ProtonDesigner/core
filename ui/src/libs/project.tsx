@@ -145,7 +145,7 @@ class Project {
             const element = elements[key]
             const elementID: string = element.elementID
             const ElementConstructor = ELEMENT_LIST[elementID]
-            const newElement = new ElementConstructor()
+            const newElement: ProjectElement = new ElementConstructor()
             newElement.load(element)
             this.addElement(newElement)
         })
@@ -179,6 +179,9 @@ class ProjectElement {
             Here you put your custom component logic!
         </div>
     }
+
+    onRun() {}
+    onStop() {}
 
     initialize() {
         console.log(`Component "${this.uid}" initialized!`)
