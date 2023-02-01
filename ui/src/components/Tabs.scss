@@ -26,6 +26,10 @@ $bar-height: 35px;
     }
     .content {
         background-color: $item-active;
-        height: calc(100vh - $bar-height - $tools-height);
+        height: calc(100vh - $bar-height);
+
+        &.editor {
+            height: calc(100vh - $bar-height - $tools-height);
+        }
     }
 }

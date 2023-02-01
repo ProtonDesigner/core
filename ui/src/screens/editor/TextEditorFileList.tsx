@@ -3,7 +3,7 @@ import React, { FC, useState } from "react";
 import Dialog from "../../components/Dialog";
 import { Project, ProjectScript } from "../../libs/internal";
 
-import { Tab } from "./Tabs";
+import { Tab } from "../../components/Tabs";
 import getAsset from "../../libs/getAsset";
 
 function createNewTab(

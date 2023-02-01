@@ -27,8 +27,6 @@ interface EditorProps extends BaseComponentProps {}
 const themeLoader = new ThemeLoader();
 // console.log(themeLoader.getTheme("example.js"))
 
-const pluginManager = new PluginManager()
-
 function Editor<FC>(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)
     const [showElementDialog, setElementDialog] = useState(false)
@@ -43,7 +41,7 @@ function Editor<FC>(props: EditorProps) {
 
     const [isRunning, setIsRunning] = useState(false)
 
-    const logic = new EditorLogic(pluginManager, project)
+    const logic = new EditorLogic(props.pluginManager, project)
 
     useEffect(() => {
         logic.project = project
@@ -66,13 +64,79 @@ function Editor<FC>(props: EditorProps) {
         return logic.invoke("addElement", {element})
     }
 
+    async function runLua() {
+        // Expose logging functions to lua
+        lua.global.set("infoToConsole", (msg: any) => consoleLog(msg, "info"))
+        lua.global.set("warnToConsole", (msg: any) => consoleLog(msg, "warn"))
+        lua.global.set("errToConsole", (msg: any) => consoleLog(msg, "error"))
+
+        // Expose elements to Lua
+        lua.global.set("getElement", (name: string) => {
+            const elements = project.elements
+            let element: any = null
+            Object.keys(elements).map(key => {
+                const _element: ProjectElement = elements[key]
+                if (!element) {
+                    if (_element.name == name) {
+                        element = _element.serialize()
+                    }
+                }
+            })
+            return element
+        })
+
+        Object.keys(project.elements).map(key => {
+            const doStuff = async () => {
+                const element = project.elements[key]
+                try {
+                    element.lua = lua
+                    await element.onRun()
+                } catch (err: any) {
+                    consoleLog(`An exception occurred in ${element.name} while attempting to start:`, "error")
+                    err.split("\n").map((line: string) => {
+                        consoleLog(line, "error")
+                    })
+                }
+            }
+            doStuff()
+        })
+
+        // Get and execute the main function
+        await lua.doStringSync(project.getScript("main.lua"))
+        const mainFunction = lua.global.get("main")
+        const output = mainFunction()
+
+        // lua.global.close()
+        setIsRunning(false)
+
+        Object.keys(project.elements).map(key => {
+            const doStuff = async () => {
+                const element = project.elements[key]
+                try {
+                    await element.onStop()
+                } catch (err: any) {
+                    consoleLog(`An exception occurred in ${element.name} while stopping:`, "error")
+                    err.split("\n").map((line: string) => {
+                        consoleLog(line, "error")
+                    })
+                }
+            }
+            doStuff()
+        })
+    }
+
     useEffect(() => {
         async function getData() {
             const newProject = new Project()
             newProject.load(props.state.project)
             setProject(newProject)
             setLoaded(true)
-            pluginManager.setProject(newProject)
+            props.pluginManager.setProject(newProject)
+
+            runLua().catch((reason) => {
+                console.warn("Unable to execute Lua Script")
+                console.warn(reason)
+            })
         }
         if (!loaded) {
             getData()
@@ -81,66 +145,7 @@ function Editor<FC>(props: EditorProps) {
 
 
     useEffect(() => {
-        const doStuff = async () => {
-            // Expose logging functions to lua
-            lua.global.set("infoToConsole", (msg: any) => consoleLog(msg, "info"))
-            lua.global.set("warnToConsole", (msg: any) => consoleLog(msg, "warn"))
-            lua.global.set("errToConsole", (msg: any) => consoleLog(msg, "error"))
-
-            // Expose elements to Lua
-            lua.global.set("getElement", (name: string) => {
-                const elements = project.elements
-                let element: any = null
-                Object.keys(elements).map(key => {
-                    const _element: ProjectElement = elements[key]
-                    if (!element) {
-                        if (_element.name == name) {
-                            element = _element.serialize()
-                        }
-                    }
-                })
-                return element
-            })
-
-            Object.keys(project.elements).map(key => {
-                const doStuff = async () => {
-                    const element = project.elements[key]
-                    try {
-                        await element.onRun()
-                    } catch (err: any) {
-                        consoleLog(`An exception occurred in ${element.name} while attempting to start:`, "error")
-                        err.split("\n").map((line: string) => {
-                            consoleLog(line, "error")
-                        })
-                    }
-                }
-                doStuff()
-            })
-
-            // Get and execute the main function
-            await lua.doStringSync(project.getScript("main.lua"))
-            const mainFunction = lua.global.get("main")
-            const output = mainFunction()
-
-            // lua.global.close()
-            setIsRunning(false)
-
-            Object.keys(project.elements).map(key => {
-                const doStuff = async () => {
-                    const element = project.elements[key]
-                    try {
-                        await element.onStop()
-                    } catch (err: any) {
-                        consoleLog(`An exception occurred in ${element.name} while stopping:`, "error")
-                        err.split("\n").map((line: string) => {
-                            consoleLog(line, "error")
-                        })
-                    }
-                }
-                doStuff()
-            })
-        }
-        if (isRunning) doStuff()
+        if (isRunning) runLua()
     }, [isRunning])
 
     return <div className={`${props.className} editor`}>

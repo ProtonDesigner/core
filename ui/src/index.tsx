@@ -3,8 +3,11 @@ import { createRoot } from "react-dom/client";
 
 import Home from "./screens/home/Home"
 import Editor from "./screens/editor/Editor"
+import PluginManager from './libs/plugin';
 
 import "./main.scss"
+
+const pluginManager = new PluginManager()
 
 const pages = [
     Home,
@@ -28,6 +31,7 @@ function App<FC>(props: any) {
             state={state}
             setState={setState}
             setPage={setNewPage}
+            pluginManager={pluginManager}
         />
     </React.StrictMode>
 }

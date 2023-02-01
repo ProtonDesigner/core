@@ -6,7 +6,7 @@ import Editor, { loader } from "@monaco-editor/react"
 import * as monaco from "monaco-editor"
 loader.config({ monaco })
 
-import Tabs, { Tab } from './Tabs';
+import Tabs, { Tab } from '../../components/Tabs';
 
 import TextEditorFileList from "./TextEditorFileList";
 
@@ -43,6 +43,7 @@ export default function TextEditor(props: TextEditorProps) {
                 tabs={tabs}
                 currentIndex={selectedTab}
                 setCurrentIndex={setSelectedTab}
+                isEditor={true}
             />
         </div>
     </div>

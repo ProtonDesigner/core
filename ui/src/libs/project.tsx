@@ -1,5 +1,6 @@
 import React from 'react';
 import { v4 as uuidV4 } from 'uuid';
+import { LuaEngine } from 'wasmoon';
 
 import { ELEMENT_LIST, newMainLuaFile } from './internal';
 
@@ -20,6 +21,7 @@ interface ProjectElement {
     name: string
     render(): any,
     elementID: string
+    lua: LuaEngine
 }
 
 interface ElementProperty {
@@ -27,6 +29,7 @@ interface ElementProperty {
     name: string
     uid: string
     editable: boolean
+    id: string
 }
 
 interface ElementProperties {
@@ -183,6 +186,16 @@ class ProjectElement {
     onRun() {}
     onStop() {}
 
+    getLua(functionName: string) {
+        const isMain = functionName === "main"
+        
+        if (isMain) {
+            return
+        }
+
+        return this.lua.global.get(functionName)
+    }
+
     initialize() {
         console.log(`Component "${this.uid}" initialized!`)
     }
@@ -201,19 +214,19 @@ class ElementProperties {
     }
 
     addProperty(property: ElementProperty) {
-        this.properties[property.name] = property
+        this.properties[property.id] = property
     }
 
-    updateProperty(name: string, value: any) {
-        this.properties[name].changeValue(value)
+    updateProperty(id: string, value: any) {
+        this.properties[id].changeValue(value)
     }
 
-    deleteProperty(name: string) {
-        delete this.properties[name]
+    deleteProperty(id: string) {
+        delete this.properties[id]
     }
 
-    getProp(name: string) {
-        let property = this.properties[name]
+    getProp(id: string) {
+        let property = this.properties[id]
         return property.value
     }
 
@@ -239,11 +252,13 @@ class ElementProperties {
 }
 
 class ElementProperty {
-    constructor(name: string, value: any) {
+    constructor(name: string, value: any, id?: string) {
         this.value = value
         this.name = name
         this.uid = uuidV4()
         this.editable = true
+
+        this.id = id || this.name
     }
 
     changeValue(newValue: any) {
