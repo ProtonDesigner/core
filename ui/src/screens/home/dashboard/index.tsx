@@ -4,6 +4,8 @@ import "./dashboard.scss"
 import PocketBase from "pocketbase"
 import { Project, ProjectScript, newMainLuaFile } from '../../../libs/internal';
 
+import PluginManager from "../../../libs/plugin";
+
 interface DashboardProps {
     pb: PocketBase
     currentUser: any
@@ -11,6 +13,7 @@ interface DashboardProps {
     setCurrentPage(newState: any): any
     setState(newState: any): any
     state: object
+    pluginManager: PluginManager
 }
 
 interface ProjectCard {
