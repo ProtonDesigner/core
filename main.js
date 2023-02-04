@@ -39,7 +39,11 @@ function createWindow () {
         logo: path.join(__dirname, 'assets', 'logo.png')
     })
 
-    win.loadFile(path.join(__dirname, 'ui', 'index.html'))
+    if (app.isPackaged) {
+        win.loadFile(path.join(__dirname, 'ui', 'index.html'))
+    } else {
+        win.loadURL("http://localhost:5173")
+    }
 }
 
 let tmpDir

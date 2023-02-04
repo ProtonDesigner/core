@@ -4,6 +4,8 @@ const { contextBridge, ipcRenderer } = require("electron")
 const path = require("path")
 let PLUGIN_PATH;
 
+window.globalThis.path = path
+
 ipcRenderer.invoke("getDev").then(isDev => {
     ipcRenderer.invoke("getUserDir").then(userDir => {
         PLUGIN_PATH = isDev ? path.join(userDir, "plugins") : path.join(__dirname, "ui", "src", "plugins")
