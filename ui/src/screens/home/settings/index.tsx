@@ -2,6 +2,12 @@ import React from "react"
 import "./settings.scss"
 import PocketBase from "pocketbase"
 
+import Tabs, { Tab } from "../../../components/Tabs"
+import PluginManager from "../../../libs/plugin"
+
+import General from "./General"
+import PluginSettings from "./PluginSettings"
+
 interface SettingsProps {
     pb: PocketBase
     currentUser: any
@@ -9,10 +15,20 @@ interface SettingsProps {
     setCurrentPage(newState: any): any
     setState(newState: any): any
     state: object
+    pluginManager: PluginManager
 }
 
 export default function Settings(props: SettingsProps) {
     return <div className="settings">
-        settings
+        <Tabs className="settings__tabs" tabs={[
+            {
+                title: "General",
+                content: <General />
+            },
+            {
+                title: "Plugins",
+                content: <PluginSettings pluginManager={props.pluginManager} />
+            }
+        ]} />
     </div>
 }

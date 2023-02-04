@@ -4,7 +4,7 @@ module.exports = {
             id: "color",
             type: "string",
             required: true,
-            defaultValue: "blue"
+            defaultValue: "red"
         }
     ]
 }
