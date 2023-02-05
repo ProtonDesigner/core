@@ -4,8 +4,16 @@ import path from "path-browserify"
 
 export default defineConfig({
     root: ".",
+    clearScreen: false,
+    server: {
+        strictPort: true
+    },
+    envPrefix: ["VITE_", "TAURI_"],
     build: {
-        outDir: "./dist"
+        outDir: "./dist",
+        target: "esnext",
+        minify: !process.env.TAURI_DEBUG  ? "esbuild" : false,
+        sourcemap: !process.env.TAURI_DEBUG
     },
     plugins: [
         react({

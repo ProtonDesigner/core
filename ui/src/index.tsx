@@ -5,6 +5,12 @@ import Home from "./screens/home/Home"
 import Editor from "./screens/editor/Editor"
 import PluginManager from './libs/plugin';
 
+import { invoke } from "@tauri-apps/api"
+
+invoke("greet", { name: "world "}).then(response => {
+    console.log(response)
+})
+
 import "./main.scss"
 
 const pluginManager = new PluginManager()
