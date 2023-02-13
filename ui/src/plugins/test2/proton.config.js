@@ -1,10 +1,10 @@
-const config = {
+module.exports = {
     settings: [
         {
             id: "color",
             type: "string",
             required: true,
-            defaultValue: "blue"
+            defaultValue: "red"
         }
     ]
 }

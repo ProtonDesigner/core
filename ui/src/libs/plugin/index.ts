@@ -1,8 +1,7 @@
 import * as path from 'path';
-
 import { Project } from '../internal';
-
 import ProtonPlugin from "@techstudent10/plugin"
+import { readTextFile, readDir, BaseDirectory } from "@tauri-apps/api/fs"
 
 class PluginManager {
     // TODO: move this directory to the Electron side
@@ -20,9 +19,15 @@ class PluginManager {
             this.PLUGIN_PATH = options.path
         }
 
-        window.electronAPI.getPlugins().then((data: Array<string>) => {
-            this.load(data)
-        })
+        const getPlugins = async () => {
+            await readDir("plugins", { dir: BaseDirectory.AppLocalData, recursive: true }).then(plugin => {
+                console.log(plugin)
+            })
+        }
+
+        // window.electronAPI.getPlugins().then((data: Array<string>) => {
+        //     this.load(data)
+        // })
     }
 
     load(pluginFiles: Array<string>) {
@@ -31,6 +36,7 @@ class PluginManager {
             // console.log("a", filename)
             try {
                 const pluginObj = window.electronAPI.getPlugin(filename)
+                
                 const plugin = pluginObj.plugin
                 const pluginConfig = pluginObj.pluginConfig
                 // console.log(plugin, "\n", pluginConfig)

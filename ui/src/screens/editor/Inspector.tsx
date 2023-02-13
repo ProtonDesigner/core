@@ -7,6 +7,7 @@ interface InspectorProps {
     project: Project
     forceRerender: any
     saveProject: any
+    currentScreen: string
 }
 
 function capitalizeFirstLetter(string: string)
@@ -17,7 +18,7 @@ function capitalizeFirstLetter(string: string)
 export default function Inspector(props: InspectorProps) {
     if (!props.currentElementUID) return <></>
     
-    const currentElement: ProjectElement = props.project.elements[props.currentElementUID]
+    const currentElement: ProjectElement = props.project.screens[props.currentScreen].elements[props.currentElementUID]
     const properties = currentElement.properties.getAllProps()
 
     const [render, forceRerender] = useState(0)
@@ -44,7 +45,7 @@ export default function Inspector(props: InspectorProps) {
             </div>
         })}
         <button onClick={() => {
-            props.project.deleteElement(props.currentElementUID)
+            props.project.screens[props.currentScreen].deleteElement(props.currentElementUID)
             props.setCurrentElement(null)
             props.saveProject()
 

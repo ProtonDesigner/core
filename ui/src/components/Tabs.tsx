@@ -3,7 +3,8 @@ import "./Tabs.scss"
 
 export interface Tab {
     title: string
-    content: JSX.Element
+    content?: JSX.Element
+    onClick?: Function
 }
 
 interface TabsProps {
@@ -29,7 +30,15 @@ export default function Tabs(props: TabsProps) {
             {props.tabs.map((tab: Tab, index: number) => {
                 return <div
                     className={`item ${currentIndex === index ? "active" : ""}`}
-                    onClick={(e) => setCurrentIndex(index)}
+                    onClick={(e) => {
+                        if (tab.content) {
+                            setCurrentIndex(index)
+                        } else if (tab.onClick) {
+                            tab.onClick(e)
+                        } else {
+                            throw `Tab must have either \`content\` or \`onClick\`. Error occurred on tab ${tab.title}.`
+                        }
+                    }}
                     key={tab.title}
                 >
                     {tab.title}
