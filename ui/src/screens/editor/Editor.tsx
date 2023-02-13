@@ -10,6 +10,7 @@ import Dialog from "../../components/Dialog";
 import Preview from "./Preview";
 import Console from "./Console";
 import ThemeLoader from "../../libs/theme";
+import Tabs, { Tab } from "../../components/Tabs";
 
 import * as path from "path"
 import TextEditor from "./TextEditor";
@@ -17,7 +18,9 @@ import TextEditor from "./TextEditor";
 import { LuaFactory } from "wasmoon"
 
 import { EditorLogic } from "../../libs/logic";
-import PluginManager from "../../libs/plugin";
+
+// // @ts-expect-error
+// import * as luaGlueWasm from "wasmoon/dist/glue.wasm"
 
 const factory = new LuaFactory()
 const lua = await factory.createEngine()
@@ -41,6 +44,8 @@ function Editor<FC>(props: EditorProps) {
 
     const [isRunning, setIsRunning] = useState(false)
 
+    const [currentScreen, setCurrentScreen] = useState("")
+
     const logic = new EditorLogic(props.pluginManager, project)
 
     useEffect(() => {
@@ -61,92 +66,123 @@ function Editor<FC>(props: EditorProps) {
     }
 
     function addElement(element: ProjectElement) {
-        return logic.invoke("addElement", {element})
+        return logic.invoke("addElement", {element, screenID: currentScreen})
     }
 
-    async function runLua() {
-        // Expose logging functions to lua
-        lua.global.set("infoToConsole", (msg: any) => consoleLog(msg, "info"))
-        lua.global.set("warnToConsole", (msg: any) => consoleLog(msg, "warn"))
-        lua.global.set("errToConsole", (msg: any) => consoleLog(msg, "error"))
+    // async function runLua() {
+    //     // Expose logging functions to lua
+    //     lua.global.set("infoToConsole", (msg: any) => consoleLog(msg, "info"))
+    //     lua.global.set("warnToConsole", (msg: any) => consoleLog(msg, "warn"))
+    //     lua.global.set("errToConsole", (msg: any) => consoleLog(msg, "error"))
 
-        // Expose elements to Lua
-        lua.global.set("getElement", (name: string) => {
-            const elements = project.elements
-            let element: any = null
-            Object.keys(elements).map(key => {
-                const _element: ProjectElement = elements[key]
-                if (!element) {
-                    if (_element.name == name) {
-                        element = _element.serialize()
-                    }
-                }
-            })
-            return element
-        })
+    //     // Expose elements to Lua
+    //     lua.global.set("getElement", (name: string) => {
+    //         const elements = project.elements
+    //         let element: any = null
+    //         Object.keys(elements).map(key => {
+    //             const _element: ProjectElement = elements[key]
+    //             if (!element) {
+    //                 if (_element.name == name) {
+    //                     element = _element.serialize()
+    //                 }
+    //             }
+    //         })
+    //         return element
+    //     })
 
-        Object.keys(project.elements).map(key => {
-            const doStuff = async () => {
-                const element = project.elements[key]
-                try {
-                    element.lua = lua
-                    await element.onRun()
-                } catch (err: any) {
-                    consoleLog(`An exception occurred in ${element.name} while attempting to start:`, "error")
-                    err.split("\n").map((line: string) => {
-                        consoleLog(line, "error")
-                    })
-                }
-            }
-            doStuff()
-        })
+    //     Object.keys(project.elements).map(key => {
+    //         const doStuff = async () => {
+    //             const element = project.elements[key]
+    //             try {
+    //                 element.lua = lua
+    //                 await element.onRun()
+    //             } catch (err: any) {
+    //                 consoleLog(`An exception occurred in ${element.name} while attempting to start:`, "error")
+    //                 err.split("\n").map((line: string) => {
+    //                     consoleLog(line, "error")
+    //                 })
+    //             }
+    //         }
+    //         doStuff()
+    //     })
 
-        // Get and execute the main function
-        await lua.doStringSync(project.getScript("main.lua"))
-        const mainFunction = lua.global.get("main")
-        const output = mainFunction()
+    //     // Get and execute the main function
+    //     await lua.doStringSync(project.getScript("main.lua"))
+    //     const mainFunction = lua.global.get("main")
+    //     const output = mainFunction()
 
-        // lua.global.close()
-        setIsRunning(false)
+    //     // lua.global.close()
+    //     setIsRunning(false)
 
-        Object.keys(project.elements).map(key => {
-            const doStuff = async () => {
-                const element = project.elements[key]
-                try {
-                    await element.onStop()
-                } catch (err: any) {
-                    consoleLog(`An exception occurred in ${element.name} while stopping:`, "error")
-                    err.split("\n").map((line: string) => {
-                        consoleLog(line, "error")
-                    })
-                }
-            }
-            doStuff()
-        })
-    }
+    //     Object.keys(project.elements).map(key => {
+    //         const doStuff = async () => {
+    //             const element = project.elements[key]
+    //             try {
+    //                 await element.onStop()
+    //             } catch (err: any) {
+    //                 consoleLog(`An exception occurred in ${element.name} while stopping:`, "error")
+    //                 err.split("\n").map((line: string) => {
+    //                     consoleLog(line, "error")
+    //                 })
+    //             }
+    //         }
+    //         doStuff()
+    //     })
+    // }
 
     useEffect(() => {
         async function getData() {
             const newProject = new Project()
-            newProject.load(props.state.project)
-            setProject(newProject)
-            setLoaded(true)
-            props.pluginManager.setProject(newProject)
-
-            runLua().catch((reason) => {
-                console.warn("Unable to execute Lua Script")
-                console.warn(reason)
+            newProject.load(props.state.project, () => {
+                props.pluginManager.setProject(newProject)
+                setCurrentScreen(Object.values(newProject.screens)[0].uid)
+                setLoaded(true)
             })
+            setProject(newProject)
+            // console.log(props.state.project)
+
+            // runLua().catch((reason) => {
+            //     console.warn("Unable to execute Lua Script")
+            //     console.warn(reason)
+            // })
         }
         if (!loaded) {
             getData()
         }
     }, [])
 
+    function createTabs() {
+        let tabs: Array<Tab> = []
 
-    useEffect(() => {
-        if (isRunning) runLua()
-    }, [isRunning])
+        Object.keys(project.screens).map(key => {
+            const screen = project.screens[key]
+
+            tabs.push({
+                title: screen.name,
+                content: <Preview
+                    project={project}
+                    currentElementUID={currentElementUID}
+                    type="desktop"
+                    saveProject={saveProject}
+                    consoleLog={consoleLog}
+                    screen={screen}
+                />
+            })
+        })
+
+        tabs.push({
+            title: "+",
+            onClick: () => {
+                console.log("TODO: Create Tab")
+            }
+        })
+
+        return tabs
+    }
+
+    // useEffect(() => {
+    //     if (isRunning) runLua()
+    // }, [isRunning])
 
     return <div className={`${props.className} editor`}>
         <Tools
@@ -156,35 +192,42 @@ function Editor<FC>(props: EditorProps) {
             running={isRunning}
         />
         {loaded ? (currentPage == 0 ? <>
-            <Preview
-                project={project}
-                currentElementUID={currentElementUID}
-                type="desktop"
-                saveProject={saveProject}
-                consoleLog={consoleLog}
-            />
+            <Tabs className={`tabs__component`} tabs={createTabs()} />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
                     {Object.keys(ELEMENT_LIST).map(element_id => {
                         let Element: ProjectElement = new ELEMENT_LIST[element_id]
-                        return <div className="elements__item" key={element_id}>
-                            <h4>{Element.name}</h4>
-                            <button onClick={() => {
-                                const newElement = Element
-                                let amountOfNames = 0
-                                Object.keys(project.elements).map(key => {
-                                    const element: ProjectElement = project.elements[key]
-                                    if (element.name.replace(/\d+$/, "") === newElement.name) {
-                                        amountOfNames += 1
-                                    }
-                                })
-                                newElement.name = `${newElement.name}${amountOfNames}`
-                                addElement(newElement)
-                                setCurrentElementUID(newElement.uid)
-                                consoleLog(`added ${Element.name}`, "info")
-                                setElementDialog(false)
-                            }}>Add</button>
-                        </div>
+                        return <>
+                            <br/>
+                            <div className="elements__item" key={element_id}>
+                                <h4>{Element.name}</h4>
+                                <button onClick={() => {
+                                    const newElement = Element
+                                    let amountOfNames = 0
+                                    let elements: {[key: string]: any} = [];
+
+                                    Object.keys(project.screens).map(key => {
+                                        const screen = project.screens[key]
+                                        Object.keys(screen.elements).map(key => {
+                                            const element = screen.elements[key]
+                                            elements[element.uid] = element
+                                        })
+                                    })
+                                    
+                                    Object.keys(elements).map((key) => {
+                                        const element: ProjectElement = elements[key]
+                                        if (element.name.replace(/\d+$/, "") === newElement.name) {
+                                            amountOfNames += 1
+                                        }
+                                    })
+                                    newElement.name = `${newElement.name}${amountOfNames}`
+                                    addElement(newElement)
+                                    setCurrentElementUID(newElement.uid)
+                                    consoleLog(`added ${Element.name}`, "info")
+                                    setElementDialog(false)
+                                }}>Add</button>
+                            </div>
+                        </>
                     })}
                 </div>
             </Dialog>
@@ -194,6 +237,7 @@ function Editor<FC>(props: EditorProps) {
                 currentElementUID={currentElementUID}
                 setCurrentElementUID={setCurrentElementUID}
                 saveProject={saveProject}
+                currentScreen={currentScreen}
             />
             <Inspector
                 project={project}
@@ -201,6 +245,7 @@ function Editor<FC>(props: EditorProps) {
                 forceRerender={forceRerender}
                 saveProject={saveProject}
                 setCurrentElement={setCurrentElementUID}
+                currentScreen={currentScreen}
             />
             <Console messages={consoleMessages} setMessages={setConsoleMessages} currentElementUID={currentElementUID} />
         </> : <TextEditor

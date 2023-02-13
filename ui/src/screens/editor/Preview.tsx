@@ -1,6 +1,7 @@
 import React, { useRef, RefObject, useEffect } from "react";
 import { ProjectElement, Project } from "../../libs/internal";
 import { useDraggable, DragOptions } from "@neodrag/react";
+import { ProjectScreen } from "../../libs/internal";
 
 interface PreviewProps {
     project: Project
@@ -8,6 +9,7 @@ interface PreviewProps {
     type: string
     saveProject: () => any
     consoleLog: (message: string, type: string) => any
+    screen: ProjectScreen
 }
 
 interface ContainerProps {
@@ -53,9 +55,11 @@ export default function Preview(props: PreviewProps) {
 
     const previewRef = useRef() as RefObject<HTMLDivElement>
 
+    const elements = props.screen.elements
+
     return <div className={`preview ${props.type}`} ref={previewRef}>
-        {props.project.elements && Object.keys(props.project.elements).map((element_index) => {
-            let element: ProjectElement = props.project.elements[element_index]
+        {elements && Object.keys(elements).map((element_index) => {
+            let element: ProjectElement = elements[element_index]
             let Component = element.render
             return <ComponentContainer
                 element={element}

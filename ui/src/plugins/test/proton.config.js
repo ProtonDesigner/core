@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
     settings: [
         {
             id: "color",

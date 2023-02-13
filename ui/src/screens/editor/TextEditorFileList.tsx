@@ -192,6 +192,7 @@ function TextEditorFileList<FC>(props: TextEditorFileListProps) {
                     setTabs={props.setTabs}
                     project={props.project}
                     saveProject={props.saveProject}
+                    key={key}
                 />
             })}
 

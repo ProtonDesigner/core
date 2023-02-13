@@ -50,32 +50,68 @@ class EditorLogic extends Logic {
         this.saveProject = this.saveProject.bind(this)
         this.deleteElement = this.deleteElement.bind(this)
         this.addElement = this.addElement.bind(this)
+        this.saveScreens = this.saveScreens.bind(this)
     }
 
     saveProject() {
         // console.log(this)
         const { project } = this
 
-        const serializedProject = project.serialize()
+        const serializedProject: { [key: string]: any } = {...project.serialize()}
+        const screens = this.saveScreens()
+        serializedProject["screens"] = screens
+
         pb.collection('projects').update(project.id, serializedProject, {
             "$autoCancel": false
         })
     }
 
-    addElement({ element }: {
-        element: libs.ProjectElement
+    saveScreens() {
+        const { project } = this
+
+        const screens = project.screens
+        let screenIDs: Array<string> = []
+
+        Object.keys(screens).map(key => {
+            const screen = screens[key]
+            const serializedScreen = screen.serialize()
+
+            let screenExists: boolean = screen.pb_id !== ""
+
+            if (screenExists) {
+                pb.collection("screens").update(screen.pb_id, serializedScreen, {
+                    "$autoCancel": false
+                })
+            } else {
+                pb.collection("screens").create(serializedScreen).then(data => {
+                    screen.pb_id = data.id
+                    console.log(data.id)
+                })
+                setTimeout(() => {}, 150)
+            }
+
+            screenIDs.push(screen.pb_id)
+        })
+
+        return screenIDs
+    }
+
+    addElement({ element, screenID }: {
+        element: libs.ProjectElement,
+        screenID: string
     }) {
         const { project } = this
         
-        project.addElement(element)
+        project.screens[screenID].addElement(element)
     }
 
-    deleteElement({ elementUID }: {
-        elementUID: string
+    deleteElement({ elementUID, screenID }: {
+        elementUID: string,
+        screenID: string
     }) {
         const { project } = this
 
-        project.deleteElement(elementUID)
+        project.screens[screenID].deleteElement(elementUID)
         this.saveProject()
     } 
 }

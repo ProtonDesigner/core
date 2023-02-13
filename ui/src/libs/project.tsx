@@ -3,10 +3,11 @@ import { v4 as uuidV4 } from 'uuid';
 import { LuaEngine } from 'wasmoon';
 
 import { ELEMENT_LIST, newMainLuaFile } from './internal';
+import pb from './pocketbase';
 
 interface Project {
-    elements: {
-        [key: string]: ProjectElement
+    screens: {
+        [key: string]: ProjectScreen
     }
     name: string
     id: string
@@ -46,18 +47,18 @@ interface ProjectScript {
 
 class Project {
     constructor(name?: string) {
-        this.elements = {}
+        this.screens = {}
         this.name = name || ""
         this.id = uuidV4()
         this.scripts = {}
     }
 
-    addElement(element: ProjectElement) {
-        this.elements[element.uid] = element
+    addScreen(screen: ProjectScreen) {
+        this.screens[screen.uid] = screen
     }
 
-    deleteElement(elementUID: string) {
-        delete this.elements[elementUID]
+    deleteScreen(screenUID: string) {
+        delete this.screens[screenUID]
     }
 
     addScript(script: ProjectScript) {
@@ -94,16 +95,6 @@ class Project {
     }
 
     serialize() {
-        // Serialize elements
-        let serializedElements: {
-            [key: string]: {}
-        } = {}
-        Object.keys(this.elements).map((element_key) => {
-            const element: ProjectElement = this.elements[element_key]
-            const serializedElement = element.serialize()
-            serializedElements[element.uid] = serializedElement
-        })
-
         // Serialize scripts
         let serializedScripts: {
             [key: string]: {}
@@ -117,15 +108,13 @@ class Project {
 
         return {
             name: this.name,
-            elements: serializedElements,
             scripts: serializedScripts
         }
     }
 
-    load(json: any) {
-        const elements: {
-            [key: string]: any
-        } = json.elements
+    load(json: any, screensCallback: Function) {
+        const screens: Array<string> = json.screens
+        console.log(json)
         const name: string = json.name
 
         this.name = name
@@ -144,14 +133,46 @@ class Project {
         if (!mainExists) {
             this.addScript(newMainLuaFile())
         }
-        Object.keys(elements).map(key => {
-            const element = elements[key]
-            const elementID: string = element.elementID
-            const ElementConstructor = ELEMENT_LIST[elementID]
-            const newElement: ProjectElement = new ElementConstructor()
-            newElement.load(element)
-            this.addElement(newElement)
-        })
+
+        if (screens.length === 0) {
+            const newScreen = new ProjectScreen("Screen 1")
+            if (json.elements) {
+                Object.keys(json.elements).forEach(key => {
+                    const element = json.elements[key]
+                    const ElementConstructor = ELEMENT_LIST[element.id]
+                    const newElement: ProjectElement = new ElementConstructor()
+                    newElement.load(element)
+                    newScreen.addElement(element)
+                })
+            }
+            this.addScreen(newScreen)
+        } else {
+            const screenObj: { [key: string]: any } = {}
+            const screensFinished = new Event("screens-finished")
+            screens.map((screenID, index) => {
+                pb.collection("screens").getOne(screenID).then(screen => {
+                    console.log(index, screens.length)
+                    screenObj[screen.uid] = screen
+                    if (index == (screens.length - 1)) {
+                        document.dispatchEvent(screensFinished)
+                        console.log("ending loop!")
+                    }
+                })
+            })
+            document.addEventListener("screens-finished", (e) => {
+                console.log("sr")
+                Object.keys(screenObj).map(key => {
+                    const screen = screenObj[key]
+                    const newScreen = new ProjectScreen()
+                    newScreen.load(screen)
+                    console.log(screen)
+                    this.addScreen(newScreen)
+                })
+                screensCallback()
+            })
+        }
+
+        console.log(this.screens)
     }
 }
 
@@ -193,7 +214,13 @@ class ProjectElement {
             return
         }
 
-        return this.lua.global.get(functionName)
+        const func = this.lua.global.get(functionName)
+
+        if (typeof func !== "function") { 
+            return
+        }
+
+        return func
     }
 
     initialize() {
@@ -308,8 +335,63 @@ class ProjectScript {
     }
 }
 
+class ProjectScreen {
+    uid: string
+    name: string
+    elements: {[key: string]: ProjectElement}
+    pb_id: string
+
+    constructor(name?: string, initialElements?: any) {
+        this.name = name || ""
+        this.elements = initialElements || {}
+        this.uid = uuidV4()
+        this.pb_id = ""
+    }
+
+    addElement(element: ProjectElement) {
+        this.elements[element.uid] = element
+    }
+
+    deleteElement(elementUID: string) {
+        delete this.elements[elementUID]
+    }
+
+    load(json: {[key: string]: any}) {
+        this.name = json.name
+        this.uid = json.uid
+        this.pb_id = json.id
+
+        Object.keys(json.elements).map(key => {
+            const element = json.elements[key]
+            const elementID = element.elementID
+            const ElementConstructor = ELEMENT_LIST[elementID]
+            const newElement: ProjectElement = new ElementConstructor()
+            newElement.load(element)
+
+            this.addElement(newElement)
+        })
+    }
+
+    serialize() {
+        let elements: {[key: string]: any} = {};
+
+        Object.keys(this.elements).map(key => {
+            const element = this.elements[key]
+            elements[element.uid] = element.serialize()
+        })
+
+        return {
+            id: this.pb_id,
+            uid: this.uid,
+            name: this.name,
+            elements: elements
+        }
+    }
+}
+
 export {
     ProjectElement,
+    ProjectScreen,
     ElementProperty,
     ElementProperties,
     ProjectScript,

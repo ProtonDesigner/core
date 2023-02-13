@@ -3,10 +3,17 @@
   windows_subsystem = "windows"
 )]
 
+use std::fs;
+
 #[tauri::command]
 fn greet(name: &str) -> String {
   format!("Hello, {}!", name)
 }
+
+// #[tauri::command]
+// fn getPlugins() {
+//   fs::read_dir().into()
+// }
 
 fn main() {
   tauri::Builder::default()

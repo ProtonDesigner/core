@@ -76,32 +76,46 @@ $console-height: 130px;
         }
     }
 
-    .preview {
+    .tabs__component {
         position: absolute;
+        top: $tools-height;
+        left: $hierarchy-width;
+        width: calc(100vw - $hierarchy-width);
+        height: calc(100vh - $tools-height - $console-height);
+        & > .content {
+            background-color: white;
+            height: 100%;
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+            & > .preview {
+                position: absolute;
 
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        
-        border-radius: 0.5rem;
-        border: 5px solid black;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                
+                border-radius: 0.5rem;
+                border: 5px solid black;
 
-        // top: $tools-height;
-        // left: $hierarchy-width;
-        // height: calc(100vh - $tools-height);
-        // width: calc(100vw - $inspector-width - $hierarchy-width);
+                // top: $tools-height;
+                // left: $hierarchy-width;
+                // height: calc(100vh - $tools-height);
+                // width: calc(100vw - $inspector-width - $hierarchy-width);
 
-        &.full {
-            width: calc(100vw - $hierarchy-width)
-        }
+                &.full {
+                    width: calc(100vw - $hierarchy-width)
+                }
 
-        &.desktop {
-            width: 50rem;
-            height: 22rem;
-        }
+                &.desktop {
+                    width: 50rem;
+                    height: 22rem;
+                }
 
-        .element__container {
-            width: fit-content;
+                .element__container {
+                    width: fit-content;
+                }
+            }
         }
     }
 

@@ -1,12 +1,14 @@
 import React from 'react';
 import getAsset from '../../libs/getAsset';
+import { Project } from "../../libs/internal"
 
 interface HierarchyProps {
-    project?: any
+    project: Project
     setElementDialog?: any
     currentElementUID: string
     setCurrentElementUID: any
     saveProject: any
+    currentScreen: string
 }
 interface HierarchyItemProps {
     name: string
@@ -26,8 +28,8 @@ function HierarchyItem(props: HierarchyItemProps) {
 export default function Hierarchy(props: HierarchyProps) {
     return <div className="hierarchy">
         {/* <HierarchyItem name="Text" icon={<>Icon</>} /> */}
-        {props.project.elements && Object.keys(props.project.elements).map(key => {
-            let element = props.project.elements[key];
+        {props.project.screens[props.currentScreen] && Object.keys(props.project.screens[props.currentScreen].elements).map(key => {
+            let element = props.project.screens[props.currentScreen].elements[key];
             return <HierarchyItem
                 key={key}
                 name={element.name}

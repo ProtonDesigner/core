@@ -6,6 +6,7 @@
   "repository": "https://github.com/ProtonDesigner/rewrite",
   "author": "TechStudent10",
   "license": "MIT",
+  "type": "module",
   "devDependencies": {
     "@tauri-apps/cli": "^1.2.3",
     "@types/http-proxy": "^1.17.9",
@@ -23,7 +24,8 @@
     "tsc": "^2.0.4",
     "typescript": "^4.9.4",
     "vite": "^4.1.1",
-    "vite-plugin-html": "^3.2.0"
+    "vite-plugin-html": "^3.2.0",
+    "vite-plugin-wasm": "^3.2.1"
   },
   "dependencies": {
     "@babel/core": "^7.19.6",
@@ -48,6 +50,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
+    "react-zoom-pan-pinch": "^2.6.1",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
     "style-loader": "^3.3.1",
