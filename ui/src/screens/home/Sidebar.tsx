@@ -5,7 +5,7 @@ import * as path from "path"
 const baseAssetPath = path.join(".", "assets", "home")
 
 export function getAsset(assetName: string) {
-    return path.join(baseAssetPath, assetName)
+    return `/home/${assetName}`
 }
 
 interface SidebarItemProps {

@@ -69,6 +69,7 @@ export default function Home<FC>(props: HomeProps) {
                     setCurrentPage={props.setPage}
                     setState={props.setState}
                     pluginManager={props.pluginManager}
+                    dialogUtils={props.dialogUtils}
                 />
             </div>
         </div>

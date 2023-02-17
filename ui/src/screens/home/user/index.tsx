@@ -33,6 +33,11 @@ interface UserProps {
     pb: PocketBase
     currentUser: any
     setCurrentUser(newState: any): any
+    dialogUtils: {
+        createDialog: Function,
+        setDialog: Function,
+        showDialog: Function
+    }
 }
 
 function Login(props: any) {

@@ -1,11 +1,10 @@
-import React, { useState, useEffect, FC } from "react"
+import React, { useState, useEffect } from "react"
 import BaseComponentProps from "../../BaseComponentProps";
-import pb from "../../libs/pocketbase";
 import "./Editor.scss"
 import Hierarchy from "./Hierarchy";
 import Inspector from "./Inspector";
 import Tools from "./Tools";
-import { ProjectElement, Project, ELEMENT_LIST } from "../../libs/internal"
+import { ProjectElement, Project, ELEMENT_LIST, ProjectScreen } from "../../libs/internal"
 import Dialog from "../../components/Dialog";
 import Preview from "./Preview";
 import Console from "./Console";
@@ -22,7 +21,7 @@ import { EditorLogic } from "../../libs/logic";
 // // @ts-expect-error
 // import * as luaGlueWasm from "wasmoon/dist/glue.wasm"
 
-const factory = new LuaFactory()
+const factory = new LuaFactory("/glue.wasm")
 const lua = await factory.createEngine()
 
 interface EditorProps extends BaseComponentProps {}
@@ -30,20 +29,15 @@ interface EditorProps extends BaseComponentProps {}
 const themeLoader = new ThemeLoader();
 // console.log(themeLoader.getTheme("example.js"))
 
-function Editor<FC>(props: EditorProps) {
+function Editor(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)
     const [showElementDialog, setElementDialog] = useState(false)
-    // const [elements, setElements] = useState<any>({})
     const [currentElementUID, setCurrentElementUID] = useState<any>(null)
     const [render, forceRerender] = useState(0)
     const [consoleMessages, setConsoleMessages] = useState<any>([])
-
     const [currentPage, setCurrentPage] = useState(0)
-
     const [project, setProject] = useState<Project>(new Project());
-
     const [isRunning, setIsRunning] = useState(false)
-
     const [currentScreen, setCurrentScreen] = useState("")
 
     const logic = new EditorLogic(props.pluginManager, project)
@@ -170,10 +164,35 @@ function Editor<FC>(props: EditorProps) {
             })
         })
 
+        function CreateScreenDialog(props: any) {
+            const [screenName, setScreenName] = useState(`Screen ${Object.keys(project.screens).length + 1}`)        
+    
+            return <>
+                <label>Screen Name: </label>
+                <input type="text" value={screenName} onChange={(e) => {
+                    setScreenName(e.target.value)
+                }} />
+                <button onClick={(e) => {
+                    e.preventDefault()
+
+                    const newScreen = new ProjectScreen(screenName, {})
+                    project.addScreen(newScreen)
+                    setCurrentScreen(newScreen.uid)
+                    forceRerender(0)
+                }}>Create</button>
+            </>
+        }
+
         tabs.push({
             title: "+",
             onClick: () => {
-                console.log("TODO: Create Tab")
+                props.dialogUtils.setDialog(
+                    props.dialogUtils.createDialog(
+                        "Create Screen",
+                        <CreateScreenDialog /> 
+                    )
+                )
+                props.dialogUtils.showDialog()
             }
         })
 
@@ -192,7 +211,10 @@ function Editor<FC>(props: EditorProps) {
             running={isRunning}
         />
         {loaded ? (currentPage == 0 ? <>
-            <Tabs className={`tabs__component`} tabs={createTabs()} />
+            <Tabs className={`tabs__component`} tabs={createTabs()} onChange={(index) => {
+                setCurrentElementUID(null)
+                setCurrentScreen(Object.values(project.screens)[index].uid)
+            }} />
             <Dialog title="Add element" show={showElementDialog} setShow={setElementDialog} className="element__parent">
                 <div className="element__list">
                     {Object.keys(ELEMENT_LIST).map(element_id => {
@@ -231,6 +253,7 @@ function Editor<FC>(props: EditorProps) {
                     })}
                 </div>
             </Dialog>
+            
             <Hierarchy
                 project={project}
                 setElementDialog={setElementDialog}

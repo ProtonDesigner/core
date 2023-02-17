@@ -16,6 +16,11 @@ interface SettingsProps {
     setState(newState: any): any
     state: object
     pluginManager: PluginManager
+    dialogUtils: {
+        createDialog: Function,
+        setDialog: Function,
+        showDialog: Function
+    }
 }
 
 export default function Settings(props: SettingsProps) {

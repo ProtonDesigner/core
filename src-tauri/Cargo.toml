@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "proton-designer"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
+description = "Proton Designer is an application builder."
+authors = ["TechStudent10"]
+license = "MIT"
+repository = "https://github.com/ProtonDesigner/core"
+default-run = "proton-designer"
 edition = "2021"
 rust-version = "1.59"
 
@@ -17,7 +17,7 @@ tauri-build = { version = "1.2.1", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2.4", features = ["fs-all"] }
+tauri = { version = "1.2.4", features = ["fs-create-dir", "fs-exists", "fs-remove-file", "fs-rename-file", "fs-write-file"] }
 
 [features]
 # by default Tauri runs in production mode

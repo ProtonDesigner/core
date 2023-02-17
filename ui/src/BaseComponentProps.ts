@@ -6,4 +6,9 @@ export default interface BaseComponentProps {
     setState(newState: Object): void
     setPage(newState: number): void
     pluginManager: PluginManager
+    dialogUtils: {
+        createDialog: Function,
+        setDialog: Function,
+        showDialog: Function
+    }
 }

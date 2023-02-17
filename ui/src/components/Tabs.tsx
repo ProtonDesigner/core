@@ -13,6 +13,7 @@ interface TabsProps {
     setCurrentIndex?: (index: number) => void
     isEditor?: boolean
     className?: string
+    onChange?: (index: number) => void
 }
 
 export default function Tabs(props: TabsProps) {
@@ -38,6 +39,8 @@ export default function Tabs(props: TabsProps) {
                         } else {
                             throw `Tab must have either \`content\` or \`onClick\`. Error occurred on tab ${tab.title}.`
                         }
+
+                        props.onChange && props.onChange(index)
                     }}
                     key={tab.title}
                 >

@@ -7,14 +7,26 @@
     "distDir": "../ui/dist"
   },
   "package": {
-    "productName": "proton",
+    "productName": "Proton Designer",
     "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
       "all": false,
       "fs": {
-        "all": true
+        "all": false,
+        "readFile": false,
+        "writeFile": true,
+        "readDir": false,
+        "copyFile": false,
+        "createDir": true,
+        "removeDir": false,
+        "removeFile": true,
+        "renameFile": true,
+        "exists": true,
+        "scope": [
+          "$LOG/*"
+        ]
       }
     },
     "bundle": {
@@ -32,7 +44,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.techstudent10.proton",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -61,7 +73,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "proton",
+        "title": "Proton Designer",
         "width": 800
       }
     ]

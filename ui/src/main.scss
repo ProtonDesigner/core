@@ -1,14 +1,16 @@
 @font-face {
     font-family: "Open Sans";
-    src: url("../assets/OpenSans.ttf");
+    src: url("/OpenSans.ttf");
 }
 
 * {
     margin: 0;
     padding: 0;
-}
 
-.app {
     font-family: "Open Sans";
     user-select: none;
 }
+
+// .app {
+    
+// }

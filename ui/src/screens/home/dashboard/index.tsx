@@ -14,6 +14,11 @@ interface DashboardProps {
     setState(newState: any): any
     state: object
     pluginManager: PluginManager
+    dialogUtils: {
+        createDialog: Function,
+        setDialog: Function,
+        showDialog: Function
+    }
 }
 
 interface ProjectCard {

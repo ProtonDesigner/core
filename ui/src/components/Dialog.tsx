@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, ReactNode } from "react"
 import "./Dialog.scss"
 
 import getAsset from "../libs/getAsset"

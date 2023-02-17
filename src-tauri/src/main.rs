@@ -3,17 +3,22 @@
   windows_subsystem = "windows"
 )]
 
-use std::fs;
+// use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+
+// let quit = CustomMenuItem::new("quit".to_string(), "Quit");
+// let close = CustomMenuItem::new("close".to_string(), "Close");
+// let fileSubMenu = Submenu::new("File", Menu::new().add_item(quit).add_item(close));
+// let menu = Menu::new();
+
+// #[tauri::command]
+// async fn command_name<R: Runtime>(app: tauri::AppHandle<R>, window: tauri::Window<R>) -> Result<(), String> {
+//   Ok(())
+// }
 
 #[tauri::command]
 fn greet(name: &str) -> String {
   format!("Hello, {}!", name)
 }
-
-// #[tauri::command]
-// fn getPlugins() {
-//   fs::read_dir().into()
-// }
 
 fn main() {
   tauri::Builder::default()

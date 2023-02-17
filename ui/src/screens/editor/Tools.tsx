@@ -4,7 +4,7 @@ import * as path from 'path';
 const baseAssetPath = path.join(".", "assets")
 
 export function getAsset(assetName: string) {
-    return path.join(baseAssetPath, assetName)
+    return `/${assetName}`
 }
 
 interface ToolsProps {
