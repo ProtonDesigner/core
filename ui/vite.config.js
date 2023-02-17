@@ -14,7 +14,12 @@ export default defineConfig({
         outDir: "./dist",
         target: "esnext",
         minify: !process.env.TAURI_DEBUG  ? "esbuild" : false,
-        sourcemap: !process.env.TAURI_DEBUG
+        sourcemap: !process.env.TAURI_DEBUG,
+        rollupOptions: {
+            external: [
+                "@tauri-apps/api"
+            ]
+        }
     },
     plugins: [
         react({

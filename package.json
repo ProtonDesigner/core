@@ -1,6 +1,6 @@
 {
   "name": "proton",
-  "version": "0.1.4",
+  "version": "0.2.1",
   "description": "The all-in-one app builder for Windows, Mac and Linux.",
   "main": "main.js",
   "repository": "https://github.com/ProtonDesigner/rewrite",
