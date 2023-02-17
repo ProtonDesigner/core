@@ -1,6 +1,6 @@
 {
   "name": "proton",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "The all-in-one app builder for Windows, Mac and Linux.",
   "main": "main.js",
   "repository": "https://github.com/ProtonDesigner/rewrite",
@@ -35,6 +35,7 @@
     "@electron/remote": "^2.0.9",
     "@monaco-editor/react": "^4.4.6",
     "@neodrag/react": "^1.0.1",
+    "@tauri-apps/api": "^1.2.0",
     "@techstudent10/plugin": "^1.0.3",
     "babel-loader": "^8.2.5",
     "cross-fetch": "^3.1.5",
