@@ -49,6 +49,6 @@ jobs:
         with:
           tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           releaseName: 'Proton Designer v__VERSION__' # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          releaseBody: 'See the assets to download and install this version.'
+          releaseBody: "See the assets to download and install this version. Join the Discord Server: https://discord.gg/xvACqqYDer"
           releaseDraft: true
           prerelease: false
