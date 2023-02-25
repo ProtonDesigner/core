@@ -50,9 +50,9 @@ export default function Home<FC>(props: HomeProps) {
                 >
                     Dashboard
                 </SidebarItem>
-                <SidebarItem icon={<img src={getAsset("folder.png")}/>}>
+                {/* <SidebarItem icon={<img src={getAsset("folder.png")}/>}>
                     Projects
-                </SidebarItem>
+                </SidebarItem> */}
                 <SidebarItem icon={<img src={getAsset("cogwheel.png")}/>} style={{
                     position: "absolute",
                     bottom: "0"
