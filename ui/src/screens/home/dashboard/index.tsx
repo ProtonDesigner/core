@@ -2,9 +2,15 @@ import React, { useEffect, useState, FC } from 'react';
 import "./dashboard.scss"
 
 import PocketBase from "pocketbase"
-import { Project, ProjectScript, newMainLuaFile } from '../../../libs/internal';
+import {
+    Project,
+    ProjectScript,
+    ProjectScreen,
+    TextElement,
+    newMainLuaFile
+} from '@libs/internal';
 
-import PluginManager from "../../../libs/plugin";
+import PluginManager from "@libs/plugin";
 
 interface DashboardProps {
     pb: PocketBase
@@ -49,9 +55,26 @@ export default function Dashboard<FC>(props: DashboardProps) {
                 setProjects(resultList)
             } catch (e) {
                 console.log(e)
-                setProjects([
-                    {}
-                ]);
+                if (window.customNamespace.DEBUG) {
+                    const newProject = new Project("Test Project")
+                    const screen = new ProjectScreen("Screen One")
+                    const textElement = new TextElement()
+                    screen.addElement(
+                        textElement
+                    )
+
+                    const script = new ProjectScript("main.lua", newMainLuaFile().contents)
+
+                    newProject.addScript(script)
+                    newProject.addScreen(screen)
+                    setProjects([
+                        newProject.serialize()
+                    ])
+                } else {
+                    setProjects([
+                        {}
+                    ]);
+                }
             }
         }
         getData()

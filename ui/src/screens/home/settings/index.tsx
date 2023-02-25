@@ -2,8 +2,8 @@ import React from "react"
 import "./settings.scss"
 import PocketBase from "pocketbase"
 
-import Tabs, { Tab } from "../../../components/Tabs"
-import PluginManager from "../../../libs/plugin"
+import Tabs, { Tab } from "@components/Tabs"
+import PluginManager from "@libs/plugin"
 
 import General from "./General"
 import PluginSettings from "./PluginSettings"

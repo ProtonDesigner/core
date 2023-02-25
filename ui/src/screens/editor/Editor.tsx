@@ -1,22 +1,22 @@
 import React, { useState, useEffect } from "react"
-import BaseComponentProps from "../../BaseComponentProps";
+import BaseComponentProps from "@root/BaseComponentProps";
 import "./Editor.scss"
 import Hierarchy from "./Hierarchy";
 import Inspector from "./Inspector";
 import Tools from "./Tools";
-import { ProjectElement, Project, ELEMENT_LIST, ProjectScreen } from "../../libs/internal"
-import Dialog from "../../components/Dialog";
+import { ProjectElement, Project, ELEMENT_LIST, ProjectScreen } from "@libs/internal"
+import Dialog from "@components/Dialog";
 import Preview from "./Preview";
 import Console from "./Console";
-import ThemeLoader from "../../libs/theme";
-import Tabs, { Tab } from "../../components/Tabs";
+import ThemeLoader from "@libs/theme";
+import Tabs, { Tab } from "@components/Tabs";
 
 import * as path from "path"
 import TextEditor from "./TextEditor";
 
 import { LuaFactory } from "wasmoon"
 
-import { EditorLogic } from "../../libs/logic";
+import { EditorLogic } from "@libs/logic";
 
 // // @ts-expect-error
 // import * as luaGlueWasm from "wasmoon/dist/glue.wasm"

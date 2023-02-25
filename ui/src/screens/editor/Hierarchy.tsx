@@ -1,6 +1,6 @@
 import React from 'react';
-import getAsset from '../../libs/getAsset';
-import { Project } from "../../libs/internal"
+import getAsset from '@libs/getAsset';
+import { Project } from "@libs/internal"
 
 interface HierarchyProps {
     project: Project

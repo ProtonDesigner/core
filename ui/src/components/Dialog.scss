@@ -13,10 +13,16 @@
     &.show {
         display: block;
     }
-    img {
-        width: 15px;
-        height: 15px;
+    img.close__btn {
+        $size: 30px;
+        width: $size;
+        height: $size;
         cursor: pointer;
+        position: absolute;
+        left: 100%;
+        padding: 5px;
+        margin-left: 10px;
+        border-radius: 50rem;
     }
     .top {
         display: flex;

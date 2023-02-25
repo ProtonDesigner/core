@@ -2,14 +2,14 @@ import React, { useEffect, useState, FC } from 'react'
 import "./Home.scss"
 
 import Sidebar, { SidebarItem, getAsset } from "./Sidebar"
-import Separator from '../../components/Separator'
+import Separator from '@components/Separator'
 import Dashboard from './dashboard'
 import User from './user'
 import Settings from './settings'
 
-import pb from '../../libs/pocketbase'
+import pb from '@libs/pocketbase'
 
-import BaseComponentProps from '../../BaseComponentProps'
+import BaseComponentProps from '@root/BaseComponentProps'
 
 interface HomeProps extends BaseComponentProps {}
 

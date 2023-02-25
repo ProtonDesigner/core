@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
-import { Project, ProjectScript } from "../../libs/internal";
+import { Project, ProjectScript } from "@libs/internal";
 import './TextEditor.scss';
 import Editor, { loader } from "@monaco-editor/react"
 
 import * as monaco from "monaco-editor"
 loader.config({ monaco })
 
-import Tabs, { Tab } from '../../components/Tabs';
+import Tabs, { Tab } from '@components/Tabs';
 
 import TextEditorFileList from "./TextEditorFileList";
 

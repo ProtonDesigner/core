@@ -1,5 +1,5 @@
 import React from "react";
-import PluginManager from "../../../libs/plugin";
+import PluginManager from "@libs/plugin";
 
 export default function PluginSettings(props: {
     pluginManager: PluginManager
