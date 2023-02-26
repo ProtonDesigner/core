@@ -2,7 +2,8 @@ import React from 'react';
 import { v4 as uuidV4 } from 'uuid';
 import { LuaEngine } from 'wasmoon';
 
-import { ELEMENT_LIST, newMainLuaFile } from './internal';
+import { newMainLuaFile } from './newMainLuaFile';
+import { ELEMENT_LIST } from "./elements/builtin"
 import pb from './pocketbase';
 
 interface Project {

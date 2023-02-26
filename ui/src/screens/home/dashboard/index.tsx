@@ -6,9 +6,10 @@ import {
     Project,
     ProjectScript,
     ProjectScreen,
-    TextElement,
-    newMainLuaFile
-} from '@libs/internal';
+    // TextElement,
+} from '@libs/project';
+
+import { newMainLuaFile } from "@libs/newMainLuaFile"
 
 import PluginManager from "@libs/plugin";
 
@@ -56,20 +57,20 @@ export default function Dashboard<FC>(props: DashboardProps) {
             } catch (e) {
                 console.log(e)
                 if (window.customNamespace.DEBUG) {
-                    const newProject = new Project("Test Project")
-                    const screen = new ProjectScreen("Screen One")
-                    const textElement = new TextElement()
-                    screen.addElement(
-                        textElement
-                    )
+                    // const newProject = new Project("Test Project")
+                    // const screen = new ProjectScreen("Screen One")
+                    // const textElement = new TextElement()
+                    // screen.addElement(
+                    //     textElement
+                    // )
 
-                    const script = new ProjectScript("main.lua", newMainLuaFile().contents)
+                    // const script = new ProjectScript("main.lua", newMainLuaFile().contents)
 
-                    newProject.addScript(script)
-                    newProject.addScreen(screen)
-                    setProjects([
-                        newProject.serialize()
-                    ])
+                    // newProject.addScript(script)
+                    // newProject.addScreen(screen)
+                    // setProjects([
+                    //     newProject.serialize()
+                    // ])
                 } else {
                     setProjects([
                         {}
