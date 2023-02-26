@@ -1,7 +1,7 @@
 import React, { useRef, RefObject, useEffect } from "react";
-import { ProjectElement, Project } from "@libs/internal";
+import { ProjectElement, Project } from "@libs/project";
 import { useDraggable, DragOptions } from "@neodrag/react";
-import { ProjectScreen } from "@libs/internal";
+import { ProjectScreen } from "@libs/project";
 
 interface PreviewProps {
     project: Project

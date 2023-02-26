@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { LuaEngine } from 'wasmoon';
 
 import { newMainLuaFile } from './newMainLuaFile';
-import { ELEMENT_LIST } from "./elements/builtin"
+import { ELEMENT_LIST } from "./internal"
 import pb from './pocketbase';
 
 interface Project {

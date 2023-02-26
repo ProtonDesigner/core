@@ -4,7 +4,7 @@ import "./Editor.scss"
 import Hierarchy from "./Hierarchy";
 import Inspector from "./Inspector";
 import Tools from "./Tools";
-import { ProjectElement, Project, ProjectScreen } from "@libs/project"
+import { ProjectElement, Project, ProjectScreen } from "@libs/internal"
 import { ELEMENT_LIST } from "@libs/elements/builtin"
 import Dialog from "@components/Dialog";
 import Preview from "./Preview";

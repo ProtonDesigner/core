@@ -1,5 +1,6 @@
 import * as path from 'path';
-import { Project } from '../internal';
+import { Project } from '@libs/project';
+import { Project as ProtonProject } from '@techstudent10/plugin/lib/projectTypes';
 import ProtonPlugin from "@techstudent10/plugin"
 import { readTextFile, readDir, BaseDirectory } from "@tauri-apps/api/fs"
 
@@ -40,11 +41,11 @@ class PluginManager {
                 const plugin = pluginObj.plugin
                 const pluginConfig = pluginObj.pluginConfig
                 // console.log(plugin, "\n", pluginConfig)
-                const newPlugin = new ProtonPlugin(new Project())
-                Object.assign(newPlugin, plugin)
-                // console.log(newPlugin, plugin)
-                this.PLUGINS[filename] = {plugin: newPlugin, pluginConfig}
-                window.electronAPI.logInfo(`Loaded Plugin ${filename}`)
+                // const newPlugin = new ProtonPlugin()
+                // Object.assign(newPlugin, plugin)
+                // // console.log(newPlugin, plugin)
+                // this.PLUGINS[filename] = {plugin: newPlugin, pluginConfig}
+                // window.electronAPI.logInfo(`Loaded Plugin ${filename}`)
             } catch (err) {
                 const errMsg = `Error occurred while loading plugin ${filename}`
                 console.error(errMsg)

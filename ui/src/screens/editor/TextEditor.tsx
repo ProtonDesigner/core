@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from "react";
-import { Project, ProjectScript } from "@libs/internal";
+import { Project, ProjectScript } from "@libs/project";
 import './TextEditor.scss';
 import Editor, { loader } from "@monaco-editor/react"
 

@@ -4,7 +4,7 @@
 // import { ButtonElement } from "./ButtonElement";
 
 import React from "react";
-import { ElementProperty, ProjectElement } from "@libs/project"
+import { ElementProperty, ProjectElement } from "@libs/internal"
 
 class TextElement extends ProjectElement {
     initialize() {
