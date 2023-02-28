@@ -1,29 +1,41 @@
 import React, { useState, FC } from 'react';
 import "./user.scss"
 
-import PocketBase from "pocketbase"
+import PocketBase, { ClientResponseError } from "pocketbase"
 
-async function login(pb: PocketBase, username: string, password: string) {
+import capitalizeFirstLetter from '@libs/utils/capitalizeFirstLetter';
+
+async function login(pb: PocketBase, username: string, password: string): Promise<{[key: string]: any} | null> {
+    let _return: {[key: string]: any} | null = null
     try {
         await pb.collection("users").authWithPassword(username, password)
-        return null
-    } catch (error) {
-        throw error
+    } catch (err: any) {
+        _return = err.data
     }
+    return _return
 };
-async function signup (pb: PocketBase, username: string, password: string, passwordConfirm: string) {
+async function signup(
+    pb: PocketBase,
+    username: string,
+    password: string,
+    passwordConfirm: string
+): Promise<{[key: string]: any} | null> {
     const data = {
         username,
         password,
         passwordConfirm: passwordConfirm
     }
+    let _return: {[key: string]: any} | null = null;
     try {
         const createdUser = await pb.collection("users").create(data)
-        await login(pb, username, password)
-        return null
-    } catch (error) {
-        throw error
+    } catch (err: any) {
+        _return = err.data
     }
+    if (_return) {
+        return _return
+    }
+    await login(pb, username, password)
+    return null
 };
 const logout = (pb: PocketBase) => {
     pb.authStore.clear()
@@ -67,9 +79,14 @@ function Login(props: any) {
         <h5 className="error">{error}</h5></> : <>
         <br />
         <br /></>}
-        <button onClick={() => {
-            login(props.pb, username, password)
-                .catch((err) => setError(err.message))
+        <button onClick={async () => {
+            await login(props.pb, username, password)
+                .then((data) => {if (data && Object.keys(data.data).length > 0) {
+                    const key = Object.keys(data.data)[0]
+                    setError(`${capitalizeFirstLetter(key)}: ${data.data[key].message}`)
+                } else {
+                    setError(data?.message)
+                }})
         }}>Login</button>
         <p>Don't have an account? Click <a onClick={() => props.setLoginPage(false)}>Here</a></p>
     </div>
@@ -96,7 +113,7 @@ function Signup(props: any) {
         <br />
         <label>Email: </label>
         <input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
@@ -125,7 +142,10 @@ function Signup(props: any) {
         <br /></>}
         <button onClick={() => {
             signup(props.pb, username, password, passwordConfirm)
-                .catch((err) => setError(err.message))
+                .then((data) => {if (data) {
+                    const key = Object.keys(data.data)[0]
+                    setError(`${capitalizeFirstLetter(key)}: ${data.data[key].message}`)
+                }})
         }} >Signup</button>
         <p>Already have an account? Click <a onClick={() => props.setLoginPage(true)}>Here</a></p>
     </div>
