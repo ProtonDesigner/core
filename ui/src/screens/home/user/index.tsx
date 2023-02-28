@@ -36,7 +36,8 @@ interface UserProps {
     dialogUtils: {
         createDialog: Function,
         setDialog: Function,
-        showDialog: Function
+        showDialog: Function,
+        hideDialog: Function
     }
 }
 

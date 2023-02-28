@@ -9,6 +9,7 @@ export default interface BaseComponentProps {
     dialogUtils: {
         createDialog: Function,
         setDialog: Function,
-        showDialog: Function
+        showDialog: Function,
+        hideDialog: Function
     }
 }

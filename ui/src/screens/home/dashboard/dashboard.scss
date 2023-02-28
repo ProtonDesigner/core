@@ -1,7 +1,93 @@
 @use "../Home";
 
+.dialog__buttons {
+    padding: 5px;
+    outline: none;
+    border: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+
+    button {
+        padding: 10px;
+        outline: none;
+        border: none;
+        cursor: pointer;
+
+        &.danger {
+            border: hsl(0, 100%, 35%) 2px solid;
+            color: hsl(0, 100%, 25%);
+
+            &:hover {
+                background-color: hsl(0, 100%, 35%);
+                color: white;
+            }
+        }
+
+        &.primary {
+            border: hsl(180, 100%, 35%) 2px solid;
+            color: hsl(180, 100%, 25%);
+        
+            &:hover {
+                background-color: hsl(180, 100%, 35%);
+                color: white;
+            }
+        }
+
+        transition: all ease-in-out 0.2s;
+    }
+}
+
 .dashboard {
     width: calc(100vw - Home.$sidebar-width - Home.$page-padding);
+    
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    button {
+        border: black 2px solid;
+        color: black;
+
+        &:hover {
+            background-color: black;
+            color: white;
+        }
+
+        &.danger {
+            border: hsl(0, 100%, 35%) 2px solid;
+            color: hsl(0, 100%, 25%);
+
+            &:hover {
+                background-color: hsl(0, 100%, 35%);
+                color: white;
+            }
+        }
+
+        &.primary {
+            border: hsl(180, 100%, 35%) 2px solid;
+            color: hsl(180, 100%, 25%);
+        
+            &:hover {
+                background-color: hsl(180, 100%, 35%);
+                color: white;
+            }
+        }
+
+        background-color: inherit;
+        outline: 0;
+        padding: 5px;
+        border-radius: 0.7rem;
+        cursor: pointer;
+
+        transition: all ease-in-out 0.2s;
+    }
+
+    .project__dialog {
+        position: absolute;
+    }
+
     .projects {
         display: flex;
         flex-wrap: wrap;
@@ -20,16 +106,6 @@
                 text-overflow: ellipsis;
                 overflow: hidden;
                 white-space: nowrap;
-            }
-
-            button {
-                background-color: inherit;
-                border: hsl(180, 100%, 35%) 2px solid;
-                outline: 0;
-                color: hsl(180, 100%, 25%);
-                padding: 5px;
-                border-radius: inherit;
-                cursor: pointer;
             }
         }
     }

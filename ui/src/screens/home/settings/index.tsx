@@ -19,7 +19,8 @@ interface SettingsProps {
     dialogUtils: {
         createDialog: Function,
         setDialog: Function,
-        showDialog: Function
+        showDialog: Function,
+        hideDialog: Function
     }
 }
 

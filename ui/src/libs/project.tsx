@@ -146,7 +146,16 @@ class Project {
                     newScreen.addElement(element)
                 })
             }
-            this.addScreen(newScreen)
+            pb.collection("screens").create(newScreen.serialize()).then(createdScreen => {
+                newScreen.load(createdScreen)
+                this.addScreen(newScreen)
+                pb.collection("projects").update(this.id, {
+                    screens: [
+                        createdScreen.id
+                    ]
+                })
+                console.log(createdScreen)
+            })
         } else {
             const screenObj: { [key: string]: any } = {}
             const screensFinished = new Event("screens-finished")
@@ -381,12 +390,20 @@ class ProjectScreen {
             elements[element.uid] = element.serialize()
         })
 
-        return {
+        const data: {
+            [key: string]: any
+        } = {
             id: this.pb_id,
             uid: this.uid,
             name: this.name,
             elements: elements
         }
+
+        if (this.pb_id == "") {
+            delete data.id
+        }
+
+        return data
     }
 }
 

@@ -69,6 +69,10 @@ function App<FC>(props: any) {
         setDialogShow(true)
     }
 
+    function hideDialog() {
+        setDialogShow(false)
+    }
+
     return <React.StrictMode>
         <Dialog title={dialogTitle} show={dialogShow} setShow={setDialogShow}>
             {dialogContents}
@@ -83,7 +87,8 @@ function App<FC>(props: any) {
             dialogUtils={{
                 createDialog,
                 setDialog,
-                showDialog
+                showDialog,
+                hideDialog
             }}
         />
     </React.StrictMode>
