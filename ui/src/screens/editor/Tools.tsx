@@ -12,6 +12,7 @@ interface ToolsProps {
     setCurrentPage: (newPage: number) => void
     setRunning: (newState: boolean) => void
     running: boolean
+    goBackHome: () => any
 }
 
 interface ToolButtonProps {
@@ -29,6 +30,9 @@ function ToolButton(props: ToolButtonProps) {
 
 export default function Tools(props: ToolsProps) {
     return <div className="tools">
+        <ToolButton onClick={() => props.goBackHome()}>
+            <img src={getAsset("home-btn.png")} />
+        </ToolButton>
         <ToolButton onClick={() => props.setCurrentPage(0)}>
             <img src={getAsset("editor.png")} />
         </ToolButton>

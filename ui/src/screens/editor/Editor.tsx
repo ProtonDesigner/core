@@ -210,6 +210,7 @@ function Editor(props: EditorProps) {
             setCurrentPage={setCurrentPage}
             setRunning={setIsRunning}
             running={isRunning}
+            goBackHome={() => props.setPage(0)}
         />
         {loaded ? (currentPage == 0 ? <>
             <Tabs className={`tabs__component`} tabs={createTabs()} onChange={(index) => {

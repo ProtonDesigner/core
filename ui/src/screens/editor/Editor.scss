@@ -29,7 +29,7 @@ $console-height: 130px;
         background-color: grey;
 
         display: flex;
-        justify-content: space-evenly;
+        justify-content: flex-start;
         gap: 5px;
 
         .toolButton {
