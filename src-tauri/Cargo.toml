@@ -2,27 +2,28 @@
 name = "proton-designer"
 version = "0.3.2"
 description = "Proton Designer is an application builder."
-authors = ["TechStudent10"]
+authors = [ "TechStudent10",]
 license = "MIT"
 repository = "https://github.com/ProtonDesigner/core"
 default-run = "proton-designer"
 edition = "2021"
 rust-version = "1.59"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[build-dependencies]
-tauri-build = { version = "1.2.1", features = [] }
-
 [dependencies]
 serde_json = "1.0"
-serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2.4", features = ["dialog-save", "fs-create-dir", "fs-exists", "fs-remove-file", "fs-rename-file", "fs-write-file"] }
 
 [features]
-# by default Tauri runs in production mode
-# when `tauri dev` runs it is executed with `cargo run --no-default-features` if `devPath` is an URL
-default = [ "custom-protocol" ]
-# this feature is used for production builds where `devPath` points to the filesystem
-# DO NOT remove this
-custom-protocol = [ "tauri/custom-protocol" ]
+default = [ "custom-protocol",]
+custom-protocol = [ "tauri/custom-protocol",]
+
+[dependencies.serde]
+version = "1.0"
+features = [ "derive",]
+
+[dependencies.tauri]
+version = "1.2.4"
+features = [ "dialog-save", "fs-create-dir", "fs-exists", "fs-remove-file", "fs-rename-file", "fs-write-file",]
+
+[build-dependencies.tauri-build]
+version = "1.2.1"
+features = []
