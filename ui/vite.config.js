@@ -26,10 +26,10 @@ export default defineConfig({
     resolve: {
         alias: {
             path: "path-browserify",
-            "@components": path.resolve(__dirname, "./src/components"),
-            "@libs": path.resolve(__dirname, "./src/libs"),
-            "@screens": path.resolve(__dirname, "./src/screens"),
-            "@root": path.resolve(__dirname, "./src")
+            "@components": path.resolve(__dirname, "/src/components"),
+            "@libs": path.resolve(__dirname, "/src/libs"),
+            "@screens": path.resolve(__dirname, "/src/screens"),
+            "@root": path.resolve(__dirname, "/src")
         }
     }
 })
