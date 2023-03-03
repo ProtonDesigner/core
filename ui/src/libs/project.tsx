@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { LuaEngine } from 'wasmoon';
 
 import { newMainLuaFile } from './newMainLuaFile';
-import { ELEMENT_LIST } from "./internal"
+// import { ELEMENT_LIST } from "./elements/builtin"
 import pb from './pocketbase';
 
 interface Project {
@@ -140,10 +140,12 @@ class Project {
             if (json.elements) {
                 Object.keys(json.elements).forEach(key => {
                     const element = json.elements[key]
-                    const ElementConstructor = ELEMENT_LIST[element.id]
-                    const newElement: ProjectElement = new ElementConstructor()
-                    newElement.load(element)
-                    newScreen.addElement(element)
+                    import("@libs/elements/builtin").then(({ELEMENT_LIST}) => {
+                        const ElementConstructor = ELEMENT_LIST[element.id]
+                        const newElement: ProjectElement = new ElementConstructor()
+                        newElement.load(element)
+                        newScreen.addElement(element)
+                    })
                 })
             }
             pb.collection("screens").create(newScreen.serialize()).then(createdScreen => {
@@ -374,11 +376,13 @@ class ProjectScreen {
         Object.keys(json.elements).map(key => {
             const element = json.elements[key]
             const elementID = element.elementID
-            const ElementConstructor = ELEMENT_LIST[elementID]
-            const newElement: ProjectElement = new ElementConstructor()
-            newElement.load(element)
+            import("@libs/elements/builtin").then(({ELEMENT_LIST}) => {
+                const ElementConstructor = ELEMENT_LIST[elementID]
+                const newElement: ProjectElement = new ElementConstructor()
+                newElement.load(element)
 
-            this.addElement(newElement)
+                this.addElement(newElement)
+            })
         })
     }
 
