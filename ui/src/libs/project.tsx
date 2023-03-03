@@ -46,6 +46,8 @@ interface ProjectScript {
     uid: string
 }
 
+import { ELEMENT_LIST } from "@libs/internal"
+
 class Project {
     constructor(name?: string) {
         this.screens = {}
@@ -140,12 +142,11 @@ class Project {
             if (json.elements) {
                 Object.keys(json.elements).forEach(key => {
                     const element = json.elements[key]
-                    import("@libs/elements/builtin").then(({ELEMENT_LIST}) => {
-                        const ElementConstructor = ELEMENT_LIST[element.id]
-                        const newElement: ProjectElement = new ElementConstructor()
-                        newElement.load(element)
-                        newScreen.addElement(element)
-                    })
+                    
+                    const ElementConstructor = ELEMENT_LIST[element.id]
+                    const newElement: ProjectElement = new ElementConstructor()
+                    newElement.load(element)
+                    newScreen.addElement(element)
                 })
             }
             pb.collection("screens").create(newScreen.serialize()).then(createdScreen => {
@@ -376,13 +377,13 @@ class ProjectScreen {
         Object.keys(json.elements).map(key => {
             const element = json.elements[key]
             const elementID = element.elementID
-            import("@libs/elements/builtin").then(({ELEMENT_LIST}) => {
-                const ElementConstructor = ELEMENT_LIST[elementID]
-                const newElement: ProjectElement = new ElementConstructor()
-                newElement.load(element)
+            // const builtinElements = require("./elements/builtin")
+            // const ELEMENT_LIST = builtinElements.default
+            const ElementConstructor = ELEMENT_LIST[elementID]
+            const newElement: ProjectElement = new ElementConstructor()
+            newElement.load(element)
 
-                this.addElement(newElement)
-            })
+            this.addElement(newElement)
         })
     }
 

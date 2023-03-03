@@ -14,7 +14,10 @@ export default defineConfig({
         outDir: "./dist",
         target: "esnext",
         minify: !process.env.TAURI_DEBUG  ? "esbuild" : false,
-        sourcemap: !process.env.TAURI_DEBUG
+        sourcemap: !process.env.TAURI_DEBUG,
+        commonjsOptions: {
+            transformMixedEsModules: true
+        }
     },
     plugins: [
         react({
