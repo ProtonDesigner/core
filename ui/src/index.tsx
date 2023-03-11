@@ -26,6 +26,7 @@ invoke("greet", { name: "world "}).then(response => {
 })
 
 import "./main.scss"
+import ErrorBoundary from './ErrorBoundary';
 
 const pluginManager = new PluginManager()
 const settingsManager = new SettingsManager({})
@@ -49,6 +50,8 @@ function App<FC>(props: any) {
     }
 
     let Screen = pages[currentPage]
+
+    hello()
 
     function createDialog(title: string, contents: JSX.Element) {
         console.log(title, contents)
@@ -102,10 +105,9 @@ async function log(infoLevel: "info" | "warn" | "error" | "err", message: string
 
 const node = document.getElementById("app");
 const root = createRoot(node!);
-(async () => {
-    root.render(<App />)
-})().catch((err) => {
-    root.render(<>
-        Error occurred: {err}
-    </>)
-})
+
+root.render(
+    <ErrorBoundary>
+        <App />
+    </ErrorBoundary>
+)

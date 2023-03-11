@@ -1,0 +1,13 @@
+.error {
+    text-align: center;
+    margin-top: 25vh;
+    height: 1vh;
+
+    pre {
+        background-color: rgb(153, 153, 153);
+        font-family: monospace;
+        overflow: scroll;
+
+        text-align: left;
+    }
+}
