@@ -1,7 +1,8 @@
 import PluginManager from "./libs/plugin"
+import SettingsManager from "@libs/settings"
 
 export default interface BaseComponentProps {
-    className: string
+    className?: string
     state: any
     setState(newState: Object): void
     setPage(newState: number): void
@@ -12,4 +13,5 @@ export default interface BaseComponentProps {
         showDialog: Function,
         hideDialog: Function
     }
+    settingsManager: SettingsManager
 }

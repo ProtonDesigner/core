@@ -33,6 +33,9 @@ export default function Home<FC>(props: HomeProps) {
 
     let Component = pages[currentPage]
 
+    let component_props = {...props}
+    delete component_props["className"]
+
     return (
         <div className={`${props.className} home`}>
             <Sidebar>
@@ -65,11 +68,9 @@ export default function Home<FC>(props: HomeProps) {
                     pb={pb}
                     currentUser={currentUser}
                     setCurrentUser={setCurrentUser}
-                    state={props.state}
                     setCurrentPage={props.setPage}
-                    setState={props.setState}
-                    pluginManager={props.pluginManager}
-                    dialogUtils={props.dialogUtils}
+
+                    {...component_props}
                 />
             </div>
         </div>

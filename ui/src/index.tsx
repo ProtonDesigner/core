@@ -8,6 +8,7 @@ import Dialog from './components/Dialog';
 
 import { invoke } from "@tauri-apps/api"
 import { appLogDir } from "@tauri-apps/api/path"
+import SettingsManager, { SettingsManagerOptions, SettingsType } from "@libs/settings"
 
 declare global {
     interface Window {
@@ -27,6 +28,7 @@ invoke("greet", { name: "world "}).then(response => {
 import "./main.scss"
 
 const pluginManager = new PluginManager()
+const settingsManager = new SettingsManager({})
 
 const pages = [
     Home,
@@ -90,6 +92,7 @@ function App<FC>(props: any) {
                 showDialog,
                 hideDialog
             }}
+            settingsManager={settingsManager}
         />
     </React.StrictMode>
 }
