@@ -51,8 +51,6 @@ function App<FC>(props: any) {
 
     let Screen = pages[currentPage]
 
-    hello()
-
     function createDialog(title: string, contents: JSX.Element) {
         console.log(title, contents)
         const newDialog = {
