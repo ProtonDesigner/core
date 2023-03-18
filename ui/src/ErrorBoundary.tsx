@@ -41,6 +41,8 @@ class ErrorBoundary extends React.Component<Props, State> {
                         {this.state.error?.stack}
                     </code>
                 </pre>
+                <button onClick={() => navigator.clipboard.writeText(this.state.error?.stack || "")}>Copy error to clipboard</button>
+                <button onClick={() => window.location.reload()}>Refresh</button>
             </div>
         }
         return this.props.children

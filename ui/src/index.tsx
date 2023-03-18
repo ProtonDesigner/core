@@ -76,7 +76,7 @@ function App<FC>(props: any) {
         setDialogShow(false)
     }
 
-    return <React.StrictMode>
+    return <>
         <Dialog title={dialogTitle} show={dialogShow} setShow={setDialogShow}>
             {dialogContents}
         </Dialog>
@@ -95,7 +95,7 @@ function App<FC>(props: any) {
             }}
             settingsManager={settingsManager}
         />
-    </React.StrictMode>
+    </>
 }
 
 async function log(infoLevel: "info" | "warn" | "error" | "err", message: string) {
@@ -105,7 +105,9 @@ const node = document.getElementById("app");
 const root = createRoot(node!);
 
 root.render(
-    <ErrorBoundary>
-        <App />
-    </ErrorBoundary>
+    <React.StrictMode>
+        <ErrorBoundary>
+            <App />
+        </ErrorBoundary>
+    </React.StrictMode>
 )

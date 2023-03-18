@@ -34,11 +34,18 @@ class SettingsManager {
             }
         })
 
+        Object.keys(settings).map(key => {
+            if (!Object.keys(defaultSettings).includes(key)) {
+                delete settings[key]
+            }
+        })
+
         return settings
     }
 
     saveSettings() {
-        localStorage.setItem("settings", JSON.stringify(this.settings))
+        localStorage.setItem("settings", JSON.stringify(this.validateSettings(JSON.stringify(this.settings))))
+        console.log("Saved settings!")
     }
 
     private initializeSettings(): void {
