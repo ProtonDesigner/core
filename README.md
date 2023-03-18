@@ -15,13 +15,13 @@ Releases can be found in the Releases tab.
 
 1. Clone the repo and change directory to it
 ```bash
-$ git clone https://github.com/ProtonDesigner/core
-$ cd core
+git clone https://github.com/ProtonDesigner/core
+cd core
 ```
 
 2. Install the dependencies
 ```bash
-$ yarn
+yarn
 ```
 
 ### Running
