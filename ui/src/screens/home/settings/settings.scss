@@ -2,11 +2,9 @@
 @use "../../../components/Tabs";
 
 .settings {
-    width: 100%;
-
-    .settings__tabs {
-        .content {
-            height: calc(100vh - Home.$page-padding - Tabs.$bar-height);
+    div.tabs {
+        .tab__button {
+            background-color: inherit;
         }
     }
 }

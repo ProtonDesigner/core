@@ -9,7 +9,9 @@ Releases can be found in the Releases tab.
 
 ---
 
-## Running
+## Developing and Building
+
+### Installing Dependencies
 
 1. Clone the repo and change directory to it
 ```bash
@@ -22,23 +24,18 @@ $ cd core
 $ yarn
 ```
 
-3. Run the application
+### Running
+
+1. Run the application
 ```bash
-$ yarn dev
+yarn dev
 ```
-
-## Debugging (only in VSCode)
-
-1. Make sure you have the repo open in VSCode (step 1 above)
-2. Go to the "Run and Debug" tab on the sidebar
-3. Run "Debug Main and Renderer Processes"
 
 ## Building
 
-1. Make sure you have cloned the repo (step 1 above)
-2. Run this command. It should put the executable in the `dist/` folder
+1. Run this command. It should put the executable in the `dist/` folder
 ```bash
-$ yarn build
+yarn build
 ```
 
 ---

@@ -10,6 +10,8 @@ import { invoke } from "@tauri-apps/api"
 import { appLogDir } from "@tauri-apps/api/path"
 import SettingsManager, { SettingsManagerOptions, SettingsType } from "@libs/settings"
 
+import "./DarkMode.scss"
+
 declare global {
     interface Window {
         customNamespace: {
@@ -82,7 +84,7 @@ function App<FC>(props: any) {
         </Dialog>
 
         <Screen
-            className="app"
+            className={`app ${settingsManager.settings.personalization?.darkMode ? "dark" : ""}`}
             state={state}
             setState={setState}
             setPage={setNewPage}

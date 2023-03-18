@@ -1,0 +1,24 @@
+.dark {
+    background-color: hsl(0, 0%, 11%);
+    color: white;
+
+    // Home page
+    &.home {
+        .sidebar {
+            background-color: hsl(0, 0%, 29%);
+        }
+
+        button:not(.primary):not(.danger) {
+            color: white;
+            border-color: white;
+
+            &:hover {
+                color: black;
+                background-color: white;
+            }
+        }
+    }
+
+    // Settings page
+    
+}

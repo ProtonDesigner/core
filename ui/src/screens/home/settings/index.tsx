@@ -75,8 +75,12 @@ export default function Settings(props: SettingsProps) {
                     content: <>{Object.keys(value).map((key) => {
                         const settingValue = value[key]
                         setInpState(settingsManager.settings[objKey][key])
-                        return <>{addSpaceAtCapitals(capitalizeFirstLetter(key))}: {getContent(settingValue, key)}
-                    </>})}</>
+                        return <>
+                            <h4>You must restart the app to apply changes.</h4>
+                            <br/>
+                            {addSpaceAtCapitals(capitalizeFirstLetter(key))}: {getContent(settingValue, key)}
+                        </>
+                    })}</>
                 })
             } else {
                 tabs.push({
