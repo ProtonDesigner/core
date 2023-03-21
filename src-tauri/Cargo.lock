@@ -996,6 +996,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "home"
+version = "0.5.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "747309b4b440c06d57b0b25f2aee03ee9b5e5397d288c60e21fc709bb98a7408"
+dependencies = [
+ "winapi",
+]
+
+[[package]]
 name = "html5ever"
 version = "0.25.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1769,6 +1778,7 @@ dependencies = [
 name = "proton-designer"
 version = "0.3.3"
 dependencies = [
+ "home",
  "serde",
  "serde_json",
  "tauri",

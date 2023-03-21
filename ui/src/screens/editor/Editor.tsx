@@ -9,7 +9,6 @@ import { ELEMENT_LIST } from "@libs/elements/builtin"
 import Dialog from "@components/Dialog";
 import Preview from "./Preview";
 import Console from "./Console";
-import ThemeLoader from "@libs/theme";
 import Tabs, { Tab } from "@components/Tabs";
 
 import * as path from "path"
@@ -26,9 +25,6 @@ const factory = new LuaFactory("/glue.wasm")
 const lua = await factory.createEngine()
 
 interface EditorProps extends BaseComponentProps {}
-
-const themeLoader = new ThemeLoader();
-// console.log(themeLoader.getTheme("example.js"))
 
 function Editor(props: EditorProps) {
     const [loaded, setLoaded] = useState(false)

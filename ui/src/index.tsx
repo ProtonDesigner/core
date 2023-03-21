@@ -9,8 +9,11 @@ import Dialog from './components/Dialog';
 import { invoke } from "@tauri-apps/api"
 import { appLogDir } from "@tauri-apps/api/path"
 import SettingsManager, { SettingsManagerOptions, SettingsType } from "@libs/settings"
+import { initConfigDirs } from '@libs/configFiles';
 
 import "./DarkMode.scss"
+
+initConfigDirs()
 
 declare global {
     interface Window {
@@ -23,21 +26,31 @@ declare global {
 window.customNamespace = window.customNamespace || {}
 window.customNamespace.DEBUG = window.location.href === "http://localhost:5173/"
 
-invoke("greet", { name: "world "}).then(response => {
-    console.log(response)
-})
+import ThemeLoader from '@libs/theme';
+
+// invoke("greet", { name: "world "}).then(response => {
+//     console.log(response)
+// })
+
+// invoke("list_dir", { directory: "C:\\" }).then((response) => {
+//     const data = response as string[]
+//     console.log(data)
+// })
 
 import "./main.scss"
 import ErrorBoundary from './ErrorBoundary';
 
 const pluginManager = new PluginManager()
 const settingsManager = new SettingsManager({})
+const themeLoader = new ThemeLoader()
 
 const pages = [
     Home,
     () => {return <></>},
     Editor
 ]
+
+themeLoader.loadTheme("tech10.orangy")
 
 function App<FC>(props: any) {
     const [state, setState] = useState({})
