@@ -10,6 +10,7 @@ import Settings from './settings'
 import pb from '@libs/pocketbase'
 
 import BaseComponentProps from '@root/BaseComponentProps'
+import Marketplace from './marketplace'
 
 interface HomeProps extends BaseComponentProps {}
 
@@ -28,7 +29,8 @@ export default function Home<FC>(props: HomeProps) {
     const pages = [
         User,
         Dashboard,
-        Settings
+        Settings,
+        Marketplace
     ]
 
     let Component = pages[currentPage]
@@ -52,6 +54,12 @@ export default function Home<FC>(props: HomeProps) {
                     onClick={() => setPage(1)}
                 >
                     Dashboard
+                </SidebarItem>
+                <SidebarItem
+                    icon={<img src={getAsset("marketplace.png")} />}
+                    onClick={() => setPage(3)}
+                >
+                    Marketplace
                 </SidebarItem>
                 {/* <SidebarItem icon={<img src={getAsset("folder.png")}/>}>
                     Projects

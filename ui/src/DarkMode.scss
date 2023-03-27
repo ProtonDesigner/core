@@ -8,7 +8,7 @@
             background-color: hsl(0, 0%, 29%);
         }
 
-        button:not(.primary):not(.danger) {
+        button:not(.primary):not(.danger):not(.tab__button button) {
             color: white;
             border-color: white;
 
@@ -17,6 +17,11 @@
                 background-color: white;
             }
         }
+
+        .tab__button button {
+            color: white;
+        }
+
     }
 
     // Settings page

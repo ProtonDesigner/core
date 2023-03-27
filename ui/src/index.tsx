@@ -6,12 +6,22 @@ import Editor from "./screens/editor/Editor"
 import PluginManager from './libs/plugin';
 import Dialog from './components/Dialog';
 
-import { invoke } from "@tauri-apps/api"
-import { appLogDir } from "@tauri-apps/api/path"
+import { open } from "@tauri-apps/api/shell"
 import SettingsManager, { SettingsManagerOptions, SettingsType } from "@libs/settings"
 import { initConfigDirs } from '@libs/configFiles';
 
 import "./DarkMode.scss"
+
+// Opening links in the default browser
+Object.values(document.getElementsByTagName("a")).map(anchorElement => {
+    if (anchorElement.target == "_blank") {
+        anchorElement.onclick = (e) => {
+            open(
+                anchorElement.href
+            )
+        }
+    }
+})
 
 initConfigDirs()
 
@@ -50,7 +60,7 @@ const pages = [
     Editor
 ]
 
-themeLoader.loadTheme("tech10.orangy")
+themeLoader.loadTheme()
 
 function App<FC>(props: any) {
     const [state, setState] = useState({})

@@ -23,7 +23,7 @@ features = [ "derive",]
 
 [dependencies.tauri]
 version = "1.2.4"
-features = [ "dialog-save", "fs-create-dir", "fs-exists", "fs-remove-file", "fs-rename-file", "fs-write-file",]
+features = [ "shell-open", "dialog-save", "fs-create-dir", "fs-exists", "fs-remove-file", "fs-rename-file", "fs-write-file",]
 
 [build-dependencies.tauri-build]
 version = "1.2.1"

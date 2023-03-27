@@ -28,6 +28,14 @@ namespace TauriFS {
     export async function getHomeDir(): Promise<string> {
         return await invoke("get_home_dir")
     }
+
+    export async function rmdir(directoryPath: string): Promise<void> {
+        return await invoke("rmdir", { directoryPath })
+    }
+
+    export async function rmfile(path: string): Promise<void> {
+        return await invoke("rmfile", { path })
+    }
 }
 
 export default TauriFS

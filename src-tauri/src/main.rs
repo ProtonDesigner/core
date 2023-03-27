@@ -23,7 +23,7 @@ fn cwd() -> String {
 }
 
 #[tauri::command]
-fn list_dir(directory: String, is_debug: bool) -> Vec<String> {
+fn list_dir(directory: String) -> Vec<String> {
   let path = Path::new(&get_current_working_dir()).join("..").join(directory);
   println!("{}", path.display());
   let paths = fs::read_dir(path).unwrap();
@@ -68,6 +68,19 @@ fn exists(path: String) -> bool {
   return Path::new(&path).exists()
 }
 
+#[tauri::command]
+fn rmdir(directory_path: String) -> Result<(), ()> {
+  fs::remove_dir_all(directory_path).expect("Unable to delete directory");
+  
+  Ok(())
+}
+
+#[tauri::command]
+fn rmfile(path: String) -> Result<(), ()> {
+  fs::remove_file(path).expect("Unable to delete file");
+  
+  Ok(())
+}
 
 // General utility stuff
 #[tauri::command]
@@ -84,7 +97,9 @@ fn main() {
       mkdir,
       cwd,
       exists,
-      get_home_dir
+      get_home_dir,
+      rmdir,
+      rmfile
     ])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");

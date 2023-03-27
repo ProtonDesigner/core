@@ -3,14 +3,12 @@ import "./settings.scss"
 import PocketBase from "pocketbase"
 
 import PluginManager from "@libs/plugin"
-
-import General from "./General"
-import PluginSettings from "./PluginSettings"
 import TabbedSidebar, { Tab } from "@components/TabbedSidebar"
 
 import SettingsManager from "@libs/settings"
 import capitalizeFirstLetter from "@libs/utils/capitalizeFirstLetter"
-import addSpaceAtCapitals from "@libs/utils/addSpaceAtCaptials"
+import addSpaceAtCapitals from "@libs/utils/addSpaceAtCapitals"
+import ThemeSettingPanel from "./ThemeSettingPanel"
 
 interface SettingsProps {
     pb: PocketBase
@@ -31,18 +29,17 @@ interface SettingsProps {
 const settingsManager = new SettingsManager({})
 
 export default function Settings(props: SettingsProps) {
-    let tabs: Array<Tab> = [{
-        title: "Welcome",
-        content: <>
-            Welcome to Proton Designer!
-        </>
-    }]
-
     function generateTabs(_object: { [key: string]: any }, level: number, inputRef: RefObject<HTMLInputElement>, inputState: ReturnType<typeof useState<string>>) {
+        let tabs: Array<Tab> = [{
+            title: "Welcome",
+            content: <>
+                Welcome to Proton Designer!
+            </>
+        }]
+
         Object.keys(_object).map(objKey => {
             const value = _object[objKey]
             const [inpState, setInpState] = inputState
-                        // setInpState("")
 
             console.log(objKey, value)
 
@@ -88,6 +85,19 @@ export default function Settings(props: SettingsProps) {
                     content: <>{value}</>
                 })
             }
+        })
+
+        const additionalTabs: {
+            [key: string]: (props: any) => JSX.Element
+        } = {
+            themes: ThemeSettingPanel
+        }
+        Object.keys(additionalTabs).map(key => {
+            const SettingContent = additionalTabs[key]
+            tabs.push({
+                title: capitalizeFirstLetter(key),
+                content: <SettingContent />
+            })
         })
 
         return tabs

@@ -1,0 +1,12 @@
+.marketplace {
+    .themes {
+        display: flex;
+        flex-wrap: wrap;
+        .marketplace__item {
+            padding: 20px;
+            box-shadow: 0px 0px 40px 5px rgba(0,0,0,0.20);
+
+            width: fit-content;
+        }
+    }
+}
