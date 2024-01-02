@@ -7,7 +7,7 @@
   "license": "MIT",
   "type": "module",
   "devDependencies": {
-    "@tauri-apps/cli": "^1.2.3",
+    "@tauri-apps/cli": "^1.5.6",
     "@types/http-proxy": "^1.17.9",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
